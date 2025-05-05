@@ -17,27 +17,26 @@ interface OnboardingProps {
 const Onboarding: React.FC<OnboardingProps> = ({ onComplete }) => {
   const theme = useTheme();
   const [currentIndex, setCurrentIndex] = useState(0);
-  const isMobile = useMediaQuery(theme.breakpoints.down('sm'));
   const swiperRef = useRef<any>(null);
   
-  // Define onboarding slides with content matching the reference screenshots
+  // Define onboarding slides with content and existing images from the public folder
   const slides = [
     {
       title: "Book Transport in Seconds",
       description: "From parcels to premium rides — get started effortlessly.",
-      image: "/assets/onboarding-1.png",
+      image: "/illustrations/delivery-truck.svg",
       bgColor: "#FFFCDF", // Light yellow
     },
     {
       title: "Track Every Booking",
       description: "Stay informed with real-time updates and booking status",
-      image: "/assets/onboarding-2.png",
+      image: "/illustrations/location-tracking.svg",
       bgColor: "#FFDCE5", // Light pink
     },
     {
       title: "We're With You Every Step",
       description: "Transparent communication and real-time booking updates.",
-      image: "/assets/onboarding-3.png",
+      image: "/illustrations/delivery-service.svg",
       bgColor: "#DFFCEA", // Light green
     },
   ];
@@ -73,12 +72,13 @@ const Onboarding: React.FC<OnboardingProps> = ({ onComplete }) => {
         display: 'flex',
         flexDirection: 'column',
         height: '100%',
+        overflow: 'hidden', // Prevent scrolling
       }}
     >
       <Box 
         sx={{ 
           position: 'absolute', 
-          top: 24, 
+          top: 16, 
           left: 0,
           right: 0,
           display: 'flex', 
@@ -102,7 +102,7 @@ const Onboarding: React.FC<OnboardingProps> = ({ onComplete }) => {
         ))}
       </Box>
 
-      <Box sx={{ flex: 1, width: '100%' }}>
+      <Box sx={{ flex: 1, width: '100%', overflow: 'hidden' }}>
         <Swiper
           onSlideChange={handleSlideChange}
           onSwiper={(swiper: any) => {
@@ -122,10 +122,10 @@ const Onboarding: React.FC<OnboardingProps> = ({ onComplete }) => {
                   display: 'flex',
                   flexDirection: 'column',
                   alignItems: 'center',
-                  justifyContent: 'center',
+                  justifyContent: 'space-between',
                   textAlign: 'center',
                   px: 3,
-                  pt: 8,
+                  pt: 6,
                   pb: 12,
                   backgroundColor: step.bgColor,
                 }}
@@ -137,22 +137,22 @@ const Onboarding: React.FC<OnboardingProps> = ({ onComplete }) => {
                     alignItems: 'center', 
                     justifyContent: 'center', 
                     width: '100%', 
-                    maxWidth: '400px',
-                    mb: 2,
-                    mt: 8
+                    maxHeight: '50%',
+                    mt: 4,
                   }}
                 >
                   <img 
                     src={step.image} 
                     alt={step.title} 
                     style={{ 
-                      width: '90%', 
-                      maxHeight: '50vh',
-                      objectFit: 'contain'
+                      width: '180px', 
+                      height: '180px',
+                      objectFit: 'contain',
+                      filter: 'drop-shadow(0px 4px 8px rgba(0,0,0,0.1))'
                     }} 
                   />
                 </Box>
-                <Box sx={{ mb: 6, px: 2, maxWidth: '450px' }}>
+                <Box sx={{ width: '100%', maxWidth: '450px', mb: 3 }}>
                   <Typography
                     variant="h4"
                     sx={{
@@ -249,16 +249,16 @@ const Onboarding: React.FC<OnboardingProps> = ({ onComplete }) => {
               color: '#ffffff',
               borderRadius: 2,
               py: 1.6,
-              textTransform: 'none',
               fontFamily: '"Poppins", sans-serif',
               fontWeight: 500,
               fontSize: '16px',
+              textTransform: 'none',
               '&:hover': {
                 bgcolor: theme.palette.primary.dark
               }
             }}
           >
-            Let's Start
+            Get Started
           </Button>
         )}
       </Box>

@@ -3,14 +3,10 @@ import {
   Box, 
   Typography, 
   Paper, 
-  Button,
   IconButton,
-  Avatar,
   useTheme,
-  Skeleton
 } from '@mui/material';
 import { useNavigate } from 'react-router-dom';
-import { styled } from '@mui/material/styles';
 
 // Import swiper for carousel
 import { Swiper, SwiperSlide } from 'swiper/react';
@@ -36,24 +32,24 @@ import HomeIcon from '@mui/icons-material/Home';
 // Import TouchableCard component
 import TouchableCard from './TouchableCard';
 
-// Dummy user data - would come from auth context in a real app
-const userDetails = {
-  first_name: 'User',
-};
-
 const MobileHome: React.FC = () => {
   const navigate = useNavigate();
   const theme = useTheme();
   const [isRefreshing, setIsRefreshing] = useState(false);
 
   // Handle pull-to-refresh
-  const handleRefresh = async () => {
+  const handleRefresh = async (): Promise<void> => {
     setIsRefreshing(true);
     
-    // Simulate a network request
-    await new Promise(resolve => setTimeout(resolve, 1500));
-    
-    setIsRefreshing(false);
+    try {
+      // Simulate a network request
+      await new Promise(resolve => setTimeout(resolve, 1500));
+      console.log('Refresh completed');
+    } catch (error) {
+      console.error('Refresh failed:', error);
+    } finally {
+      setIsRefreshing(false);
+    }
   };
 
   // Service data
@@ -61,32 +57,38 @@ const MobileHome: React.FC = () => {
     { 
       id: 'parcel-delivery', 
       title: 'Parcel Delivery', 
-      icon: <LocalShippingIcon fontSize="medium" /> 
+      icon: <LocalShippingIcon fontSize="medium" />,
+      image: '/parcel-1.jpg'
     },
     { 
       id: 'fragile-freight', 
       title: 'Fragile Freight', 
-      icon: <InventoryIcon fontSize="medium" /> 
+      icon: <InventoryIcon fontSize="medium" />,
+      image: '/gallery 7.jpeg'
     },
     { 
       id: 'chauffeur', 
       title: 'Chauffeur Services', 
-      icon: <CarRentalIcon fontSize="medium" /> 
+      icon: <CarRentalIcon fontSize="medium" />,
+      image: '/chauffeur-1.jpg'
     },
     { 
       id: 'door-to-door', 
       title: 'Door to Door', 
-      icon: <HomeIcon fontSize="medium" /> 
+      icon: <HomeIcon fontSize="medium" />,
+      image: '/gallery 1.jpg'
     },
     { 
       id: 'same-day', 
       title: 'Same Day', 
-      icon: <DirectionsCarIcon fontSize="medium" /> 
+      icon: <DirectionsCarIcon fontSize="medium" />,
+      image: '/gallery 3.jpg'
     },
     { 
       id: 'interstate', 
       title: 'Interstate', 
-      icon: <LocalShippingIcon fontSize="medium" /> 
+      icon: <LocalShippingIcon fontSize="medium" />,
+      image: '/interstate-1.jpg'
     },
   ];
 
@@ -146,7 +148,7 @@ const MobileHome: React.FC = () => {
         pb: 7,
         backgroundColor: '#f8f8f8'
       }}>
-        {/* Header */}
+        {/* Header with logo */}
         <Paper 
           elevation={0} 
           sx={{ 
@@ -159,17 +161,12 @@ const MobileHome: React.FC = () => {
             alignItems: 'center'
           }}
         >
-          <Box>
-            <Typography 
-              variant="body2" 
-              sx={{ 
-                color: 'rgba(255,255,255,0.8)',
-                fontFamily: '"Poppins", sans-serif',
-                fontSize: '14px'
-              }}
-            >
-              Welcome back
-            </Typography>
+          <Box sx={{ display: 'flex', alignItems: 'center' }}>
+            <img 
+              src="/logo.svg" 
+              alt="Motex Transport" 
+              style={{ height: '28px', marginRight: '8px' }} 
+            />
             <Typography 
               variant="h6" 
               sx={{ 
@@ -179,7 +176,7 @@ const MobileHome: React.FC = () => {
                 fontSize: '18px'
               }}
             >
-              {userDetails.first_name}
+              MOTEX
             </Typography>
           </Box>
           <IconButton 
@@ -191,7 +188,7 @@ const MobileHome: React.FC = () => {
         </Paper>
 
         {/* Hero Banner Carousel */}
-        <Box sx={{ width: '100%', height: 220 }}>
+        <Box sx={{ width: '100%', height: 200 }}>
           <Swiper
             spaceBetween={0}
             slidesPerView={1}
@@ -210,9 +207,9 @@ const MobileHome: React.FC = () => {
             <SwiperSlide>
               <Box
                 sx={{
-                  height: 220,
+                  height: 200,
                   width: '100%',
-                  backgroundImage: 'url(/assets/banner1.jpg)',
+                  backgroundImage: 'url(/MotexFeb3.jpg)',
                   backgroundSize: 'cover',
                   backgroundPosition: 'center',
                   display: 'flex',
@@ -221,14 +218,19 @@ const MobileHome: React.FC = () => {
                   padding: 3,
                 }}
               >
-                <Box sx={{ maxWidth: '70%' }}>
+                <Box sx={{ 
+                  maxWidth: '70%', 
+                  backgroundColor: 'rgba(0,0,0,0.7)', 
+                  p: 1.5, 
+                  borderRadius: 1 
+                }}>
                   <Typography
-                    variant="h5"
+                    variant="h6"
                     sx={{
                       color: '#ffffff',
                       fontWeight: 'bold',
-                      textShadow: '0px 2px 4px rgba(0,0,0,0.5)',
-                      mb: 1,
+                      fontSize: '16px',
+                      mb: 0.5,
                     }}
                   >
                     SYDNEY'S PREMIER COURIER SERVICE
@@ -239,9 +241,9 @@ const MobileHome: React.FC = () => {
             <SwiperSlide>
               <Box
                 sx={{
-                  height: 220,
+                  height: 200,
                   width: '100%',
-                  backgroundImage: 'url(/assets/banner2.jpg)',
+                  backgroundImage: 'url(/mercedes-vans-cover.jpg)',
                   backgroundSize: 'cover',
                   backgroundPosition: 'center',
                   display: 'flex',
@@ -250,17 +252,22 @@ const MobileHome: React.FC = () => {
                   padding: 3,
                 }}
               >
-                <Box sx={{ maxWidth: '70%' }}>
+                <Box sx={{ 
+                  maxWidth: '70%', 
+                  backgroundColor: 'rgba(0,0,0,0.7)', 
+                  p: 1.5, 
+                  borderRadius: 1 
+                }}>
                   <Typography
-                    variant="h5"
+                    variant="h6"
                     sx={{
                       color: '#ffffff',
                       fontWeight: 'bold',
-                      textShadow: '0px 2px 4px rgba(0,0,0,0.5)',
-                      mb: 1,
+                      fontSize: '16px',
+                      mb: 0.5,
                     }}
                   >
-                    Fast, reliable, and personalized courier solutions
+                    QUICK & RELIABLE DELIVERIES
                   </Typography>
                 </Box>
               </Box>
@@ -269,404 +276,364 @@ const MobileHome: React.FC = () => {
         </Box>
 
         {/* Quick Actions */}
-        <Box 
-          sx={{ 
-            mt: -3, 
-            mx: 2, 
-            mb: 3, 
-            borderRadius: 4, 
-            bgcolor: '#000000',
-            boxShadow: '0 4px 10px rgba(0,0,0,0.15)',
-            overflow: 'hidden'
-          }}
-        >
-          <Box sx={{ 
-            display: 'flex', 
-            justifyContent: 'space-between', 
-            p: 1,
-            overflowX: 'auto',
-            '&::-webkit-scrollbar': { display: 'none' },
-            scrollbarWidth: 'none',
-          }}>
-            <Box 
-              onClick={navigateToQuoteRequest} 
-              sx={{ 
-                display: 'flex', 
-                flexDirection: 'column', 
-                alignItems: 'center',
-                p: 1,
-                width: '33%',
-                cursor: 'pointer'
-              }}
-            >
-              <Box sx={{ 
-                p: 1, 
-                borderRadius: '50%', 
-                bgcolor: theme.palette.primary.main, 
-                display: 'flex',
-                alignItems: 'center',
-                justifyContent: 'center',
-                mb: 0.5
-              }}>
-                <ReceiptIcon sx={{ color: '#ffffff', fontSize: 20 }} />
-              </Box>
-              <Typography sx={{ 
-                color: '#ffffff', 
-                fontSize: '12px',
-                textAlign: 'center'
-              }}>
-                Request Quote
-              </Typography>
-            </Box>
+        <Box sx={{ px: 2.5, pt: 3, pb: 2 }}>
+          <Typography
+            variant="h6"
+            sx={{
+              fontWeight: 600,
+              fontSize: '18px',
+              mb: 2,
+            }}
+          >
+            What can we help you with today?
+          </Typography>
 
-            <Box 
-              onClick={navigateToRequests} 
-              sx={{ 
-                display: 'flex', 
-                flexDirection: 'column', 
-                alignItems: 'center',
-                p: 1,
-                width: '33%',
-                cursor: 'pointer'
+          <Box sx={{ display: 'flex', flexDirection: 'column', gap: 2 }}>
+            <TouchableCard
+              onClick={navigateToQuoteRequest}
+              sx={{
+                backgroundColor: theme.palette.primary.main,
+                p: 2.5,
               }}
             >
-              <Box sx={{ 
-                p: 1, 
-                borderRadius: '50%', 
-                bgcolor: '#FF2992', 
-                display: 'flex',
-                alignItems: 'center',
-                justifyContent: 'center',
-                mb: 0.5
-              }}>
-                <HistoryIcon sx={{ color: '#ffffff', fontSize: 20 }} />
+              <Box sx={{ display: 'flex', alignItems: 'center' }}>
+                <Box
+                  sx={{
+                    width: 50,
+                    height: 50,
+                    backgroundColor: 'rgba(255, 255, 255, 0.2)',
+                    borderRadius: '50%',
+                    display: 'flex',
+                    alignItems: 'center',
+                    justifyContent: 'center',
+                    mr: 2.5,
+                  }}
+                >
+                  <ReceiptIcon sx={{ color: '#ffffff', fontSize: 26 }} />
+                </Box>
+                <Box>
+                  <Typography
+                    variant="subtitle1"
+                    sx={{
+                      color: '#ffffff',
+                      fontWeight: 600,
+                      fontSize: '16px',
+                    }}
+                  >
+                    Get Instant Quote
+                  </Typography>
+                  <Typography
+                    variant="body2"
+                    sx={{
+                      color: 'rgba(255, 255, 255, 0.8)',
+                      fontWeight: 400,
+                      fontSize: '13px',
+                    }}
+                  >
+                    Quick price estimate for your delivery
+                  </Typography>
+                </Box>
               </Box>
-              <Typography sx={{ 
-                color: '#ffffff', 
-                fontSize: '12px',
-                textAlign: 'center'
-              }}>
-                My Requests
-              </Typography>
-            </Box>
+            </TouchableCard>
 
-            <Box 
-              onClick={navigateToContact} 
-              sx={{ 
-                display: 'flex', 
-                flexDirection: 'column', 
-                alignItems: 'center',
-                p: 1,
-                width: '33%',
-                cursor: 'pointer'
+            <TouchableCard
+              onClick={navigateToRequests}
+              sx={{
+                backgroundColor: '#f5f5f5',
+                p: 2.5,
               }}
             >
-              <Box sx={{ 
-                p: 1, 
-                borderRadius: '50%', 
-                bgcolor: '#3B82F6', 
-                display: 'flex',
-                alignItems: 'center',
-                justifyContent: 'center',
-                mb: 0.5
-              }}>
-                <HeadsetMicIcon sx={{ color: '#ffffff', fontSize: 20 }} />
+              <Box sx={{ display: 'flex', alignItems: 'center' }}>
+                <Box
+                  sx={{
+                    width: 50,
+                    height: 50,
+                    backgroundColor: '#e0e0e0',
+                    borderRadius: '50%',
+                    display: 'flex',
+                    alignItems: 'center',
+                    justifyContent: 'center',
+                    mr: 2.5,
+                  }}
+                >
+                  <HistoryIcon sx={{ color: '#555555', fontSize: 26 }} />
+                </Box>
+                <Box>
+                  <Typography
+                    variant="subtitle1"
+                    sx={{
+                      color: '#333333',
+                      fontWeight: 600,
+                      fontSize: '16px',
+                    }}
+                  >
+                    My Requests
+                  </Typography>
+                  <Typography
+                    variant="body2"
+                    sx={{
+                      color: '#666666',
+                      fontWeight: 400,
+                      fontSize: '13px',
+                    }}
+                  >
+                    View and track your deliveries
+                  </Typography>
+                </Box>
               </Box>
-              <Typography sx={{ 
-                color: '#ffffff', 
-                fontSize: '12px',
-                textAlign: 'center'
-              }}>
-                Contact Us
-              </Typography>
-            </Box>
-
-            <Box 
-              onClick={navigateToAbout} 
-              sx={{ 
-                display: 'flex', 
-                flexDirection: 'column', 
-                alignItems: 'center',
-                p: 1,
-                width: '33%',
-                cursor: 'pointer'
-              }}
-            >
-              <Box sx={{ 
-                p: 1, 
-                borderRadius: '50%', 
-                bgcolor: '#10B981', 
-                display: 'flex',
-                alignItems: 'center',
-                justifyContent: 'center',
-                mb: 0.5
-              }}>
-                <BusinessIcon sx={{ color: '#ffffff', fontSize: 20 }} />
-              </Box>
-              <Typography sx={{ 
-                color: '#ffffff', 
-                fontSize: '12px',
-                textAlign: 'center'
-              }}>
-                About Us
-              </Typography>
-            </Box>
+            </TouchableCard>
           </Box>
         </Box>
 
-        {/* Services Section */}
-        <Box sx={{ px: 2, mb: 4 }}>
-          <Box sx={{ 
-            display: 'flex', 
-            justifyContent: 'space-between', 
-            alignItems: 'center',
-            mb: 2 
-          }}>
-            <Typography 
-              variant="h6" 
-              sx={{ 
-                fontWeight: 600,
-                fontSize: '18px',
-                color: '#333'
-              }}
-            >
-              Our Services
-            </Typography>
-            <Typography 
-              variant="body2" 
-              sx={{ 
-                color: theme.palette.primary.main,
-                fontWeight: 500,
-                fontSize: '14px',
-                cursor: 'pointer'
-              }}
-            >
-              See All
-            </Typography>
-          </Box>
+        {/* Our Services */}
+        <Box sx={{ px: 2.5, py: 2 }}>
+          <Typography
+            variant="h6"
+            sx={{
+              fontWeight: 600,
+              fontSize: '18px',
+              mb: 2,
+            }}
+          >
+            Our Services
+          </Typography>
 
           <Box sx={{ 
-            display: 'grid',
-            gridTemplateColumns: 'repeat(3, 1fr)',
-            gap: 1.5
+            display: 'grid', 
+            gridTemplateColumns: 'repeat(2, 1fr)', 
+            gap: 2 
           }}>
             {services.map((service) => (
               <TouchableCard
                 key={service.id}
                 onClick={() => navigateToService(service.id)}
                 sx={{
-                  p: 1.5,
                   display: 'flex',
                   flexDirection: 'column',
                   alignItems: 'center',
-                  borderRadius: 2,
-                  cursor: 'pointer',
-                  border: '1px solid #f0f0f0',
+                  height: '100%',
+                  pb: 1.5,
+                  pt: 0,
                 }}
               >
-                <Box sx={{ 
-                  p: 1, 
-                  bgcolor: '#f5f5f5', 
-                  borderRadius: '50%',
-                  display: 'flex',
-                  alignItems: 'center',
-                  justifyContent: 'center',
-                  mb: 1
-                }}>
-                  {service.icon}
-                </Box>
-                <Typography 
-                  variant="body2" 
-                  sx={{ 
-                    fontSize: '12px',
-                    fontWeight: 500,
-                    textAlign: 'center',
-                    color: '#333'
+                <Box
+                  sx={{
+                    width: '100%',
+                    height: 100,
+                    backgroundImage: `url(${service.image})`,
+                    backgroundSize: 'cover',
+                    backgroundPosition: 'center',
+                    mb: 1.5,
+                    borderTopLeftRadius: 'inherit',
+                    borderTopRightRadius: 'inherit',
                   }}
-                >
-                  {service.title}
-                </Typography>
+                />
+                <Box sx={{ display: 'flex', alignItems: 'center', px: 1.5 }}>
+                  <Box
+                    sx={{
+                      display: 'flex',
+                      alignItems: 'center',
+                      justifyContent: 'center',
+                      width: 36,
+                      height: 36,
+                      borderRadius: '50%',
+                      backgroundColor: theme.palette.primary.main,
+                      color: '#ffffff',
+                      mr: 1,
+                    }}
+                  >
+                    {service.icon}
+                  </Box>
+                  <Typography
+                    variant="subtitle2"
+                    sx={{
+                      fontWeight: 500,
+                      fontSize: '14px',
+                      textAlign: 'left',
+                    }}
+                  >
+                    {service.title}
+                  </Typography>
+                </Box>
               </TouchableCard>
             ))}
           </Box>
         </Box>
 
-        {/* Testimonials Section */}
-        <Box sx={{ px: 2, mb: 4 }}>
-          <Typography 
-            variant="h6" 
-            sx={{ 
+        {/* Testimonials */}
+        <Box sx={{ py: 3, px: 0 }}>
+          <Typography
+            variant="h6"
+            sx={{
               fontWeight: 600,
               fontSize: '18px',
-              color: '#333',
-              mb: 2
+              mb: 2,
+              px: 2.5,
             }}
           >
-            Client Testimonials
+            Customer Reviews
           </Typography>
 
           <Swiper
             spaceBetween={16}
-            slidesPerView={1.2}
-            autoplay={{
-              delay: 5000,
-              disableOnInteraction: false,
-            }}
-            modules={[Autoplay]}
-            style={{ width: '100%', paddingBottom: '20px' }}
+            slidesPerView={'auto'}
+            freeMode={true}
+            style={{ padding: '0 20px 20px 20px' }}
           >
             {testimonials.map((testimonial) => (
-              <SwiperSlide key={testimonial.id}>
-                <TouchableCard
+              <SwiperSlide key={testimonial.id} style={{ width: '85%', maxWidth: '350px' }}>
+                <Paper
+                  elevation={0}
                   sx={{
-                    p: 2,
+                    p: 2.5,
                     borderRadius: 2,
-                    border: '1px solid #f0f0f0',
-                    height: '100%',
-                    display: 'flex',
-                    flexDirection: 'column',
+                    border: '1px solid #e0e0e0',
                   }}
                 >
-                  <Box sx={{ 
-                    display: 'flex', 
-                    alignItems: 'center', 
-                    mb: 1.5 
-                  }}>
-                    <Avatar sx={{ mr: 1.5, bgcolor: theme.palette.primary.main }}>
-                      {testimonial.name.charAt(0)}
-                    </Avatar>
-                    <Box>
-                      <Typography 
-                        variant="subtitle2" 
-                        sx={{ fontWeight: 600 }}
+                  <Box
+                    sx={{
+                      display: 'flex',
+                      mb: 1.5,
+                    }}
+                  >
+                    {[...Array(5)].map((_, i) => (
+                      <Box
+                        key={i}
+                        component="span"
+                        sx={{
+                          color: i < testimonial.rating ? '#FFB400' : '#e0e0e0',
+                          mr: 0.5,
+                          fontSize: '18px',
+                        }}
                       >
-                        {testimonial.name}
-                      </Typography>
-                      <Box sx={{ display: 'flex' }}>
-                        {[...Array(5)].map((_, i) => (
-                          <Box 
-                            key={i} 
-                            component="span" 
-                            sx={{ 
-                              color: i < testimonial.rating ? '#FFD700' : '#e0e0e0',
-                              fontSize: '14px',
-                              mr: 0.2
-                            }}
-                          >
-                            ★
-                          </Box>
-                        ))}
+                        ★
                       </Box>
-                    </Box>
+                    ))}
                   </Box>
-                  <Typography 
-                    variant="body2" 
-                    sx={{ 
-                      color: '#666',
+                  <Typography
+                    variant="body2"
+                    sx={{
                       fontSize: '14px',
-                      lineHeight: 1.5
+                      lineHeight: 1.6,
+                      mb: 2,
+                      color: '#333333',
                     }}
                   >
                     "{testimonial.text}"
                   </Typography>
-                </TouchableCard>
+                  <Typography
+                    variant="subtitle2"
+                    sx={{
+                      fontWeight: 600,
+                      fontSize: '14px',
+                    }}
+                  >
+                    {testimonial.name}
+                  </Typography>
+                </Paper>
               </SwiperSlide>
             ))}
           </Swiper>
         </Box>
 
-        {/* Recent Activity - Empty State */}
-        <Box sx={{ px: 2, mb: 6 }}>
-          <Typography 
-            variant="h6" 
-            sx={{ 
-              fontWeight: 600,
-              fontSize: '18px',
-              color: '#333',
-              mb: 2
-            }}
-          >
-            Recent Activity
-          </Typography>
-
-          <Paper
-            elevation={0}
+        {/* Contact Support */}
+        <Box sx={{ px: 2.5, pb: 3 }}>
+          <TouchableCard
+            onClick={navigateToContact}
             sx={{
-              p: 3,
-              borderRadius: 2,
-              border: '1px solid #f0f0f0',
-              display: 'flex',
-              flexDirection: 'column',
-              alignItems: 'center',
-              justifyContent: 'center',
-              textAlign: 'center',
+              p: 2.5,
+              bgcolor: '#f5f5f5',
             }}
           >
-            <HistoryIcon 
-              sx={{ 
-                fontSize: 40, 
-                color: '#bdbdbd',
-                mb: 1
-              }} 
-            />
-            <Typography 
-              variant="subtitle1" 
-              sx={{ 
-                fontWeight: 600,
-                color: '#757575',
-                mb: 0.5
-              }}
-            >
-              No recent activity
-            </Typography>
-            <Typography 
-              variant="body2" 
-              sx={{ 
-                color: '#9e9e9e',
-                fontSize: '14px',
-                maxWidth: '250px',
-                mx: 'auto'
-              }}
-            >
-              Your recent quote requests will appear here
-            </Typography>
-          </Paper>
+            <Box sx={{ display: 'flex', alignItems: 'center' }}>
+              <Box
+                sx={{
+                  width: 50,
+                  height: 50,
+                  backgroundColor: theme.palette.primary.main,
+                  borderRadius: '50%',
+                  display: 'flex',
+                  alignItems: 'center',
+                  justifyContent: 'center',
+                  mr: 2.5,
+                }}
+              >
+                <HeadsetMicIcon sx={{ color: '#ffffff', fontSize: 26 }} />
+              </Box>
+              <Box>
+                <Typography
+                  variant="subtitle1"
+                  sx={{
+                    color: '#333333',
+                    fontWeight: 600,
+                    fontSize: '16px',
+                  }}
+                >
+                  Need Help?
+                </Typography>
+                <Typography
+                  variant="body2"
+                  sx={{
+                    color: '#666666',
+                    fontWeight: 400,
+                    fontSize: '13px',
+                  }}
+                >
+                  Contact our customer support
+                </Typography>
+              </Box>
+            </Box>
+          </TouchableCard>
         </Box>
 
-        {/* Get Quote Button */}
-        <Box 
-          sx={{ 
-            position: 'fixed', 
-            bottom: 20, 
-            left: 0, 
-            right: 0, 
-            display: 'flex', 
-            justifyContent: 'center', 
-            px: 2 
-          }}
-        >
-          <Button
-            variant="contained"
-            disableElevation
-            fullWidth
-            onClick={navigateToQuoteRequest}
+        {/* About Us */}
+        <Box sx={{ px: 2.5, pb: 3 }}>
+          <TouchableCard
+            onClick={navigateToAbout}
             sx={{
-              borderRadius: 12,
-              py: 1.5,
-              bgcolor: theme.palette.primary.main,
-              color: '#fff',
-              fontWeight: 600,
-              fontSize: '16px',
-              boxShadow: '0 4px 12px rgba(222, 31, 39, 0.3)',
-              maxWidth: '400px',
-              textTransform: 'none',
-              '&:hover': {
-                bgcolor: theme.palette.primary.dark,
-              }
+              p: 2.5,
+              bgcolor: '#f5f5f5',
             }}
           >
-            Get An Instant Quote
-          </Button>
+            <Box sx={{ display: 'flex', alignItems: 'center' }}>
+              <Box
+                sx={{
+                  width: 50,
+                  height: 50,
+                  backgroundColor: '#455a64',
+                  borderRadius: '50%',
+                  display: 'flex',
+                  alignItems: 'center',
+                  justifyContent: 'center',
+                  mr: 2.5,
+                }}
+              >
+                <BusinessIcon sx={{ color: '#ffffff', fontSize: 26 }} />
+              </Box>
+              <Box>
+                <Typography
+                  variant="subtitle1"
+                  sx={{
+                    color: '#333333',
+                    fontWeight: 600,
+                    fontSize: '16px',
+                  }}
+                >
+                  About Motex Transport
+                </Typography>
+                <Typography
+                  variant="body2"
+                  sx={{
+                    color: '#666666',
+                    fontWeight: 400,
+                    fontSize: '13px',
+                  }}
+                >
+                  Learn more about our company
+                </Typography>
+              </Box>
+            </Box>
+          </TouchableCard>
         </Box>
       </Box>
     </PullToRefresh>

@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import { 
   Box, 
   Typography, 
@@ -7,7 +7,9 @@ import {
   IconButton,
   Drawer,
   CircularProgress,
-  useTheme
+  useTheme,
+  Alert,
+  Snackbar
 } from '@mui/material';
 import { useNavigate } from 'react-router-dom';
 
@@ -32,8 +34,7 @@ interface LocationData {
   coordinate: Coordinate;
 }
 
-// This component would normally use a real map library like Google Maps, Mapbox, or Leaflet
-// For this example, we'll create a simplified version with a placeholder for the map
+// This component creates a simplified map visualization with pickup, dropoff and route
 const MapPickupDrop: React.FC = () => {
   const navigate = useNavigate();
   const theme = useTheme();
@@ -43,16 +44,18 @@ const MapPickupDrop: React.FC = () => {
   const [dropoffLocation, setDropoffLocation] = useState<LocationData | null>(null);
   const [routeInfo, setRouteInfo] = useState<{distance: string; duration: string} | null>(null);
   const [isLoading, setIsLoading] = useState(false);
+  const [locationError, setLocationError] = useState<string | null>(null);
   
-  // Mock function to simulate location search
+  // Handle location search selection
   const handleSelectLocation = (purpose: 'pickup' | 'dropoff') => {
-    // In a real app, this would navigate to a location search screen or open a search modal
-    // For this example, we'll just set mock data
+    setIsLoading(true);
+    
+    // Simulate a location search and selection
     setTimeout(() => {
       if (purpose === 'pickup') {
         setPickupLocation({
           id: 'pickup-1',
-          name: 'Current Location',
+          name: 'Custom Pickup',
           address: '123 Main Street, Sydney NSW 2000',
           coordinate: { latitude: -33.8688, longitude: 151.2093 },
         });
@@ -65,6 +68,8 @@ const MapPickupDrop: React.FC = () => {
         });
       }
       
+      setIsLoading(false);
+      
       // If both locations are set, calculate route
       if ((purpose === 'pickup' && dropoffLocation) || 
           (purpose === 'dropoff' && pickupLocation)) {
@@ -73,8 +78,10 @@ const MapPickupDrop: React.FC = () => {
     }, 1000);
   };
   
-  // Mock function to simulate route calculation
-  const calculateRoute = () => {
+  // Calculate route between pickup and dropoff
+  const calculateRoute = useCallback(() => {
+    if (!pickupLocation || !dropoffLocation) return;
+    
     setIsLoading(true);
     // Simulate API delay
     setTimeout(() => {
@@ -83,8 +90,8 @@ const MapPickupDrop: React.FC = () => {
         duration: '12 min',
       });
       setIsLoading(false);
-    }, 1500);
-  };
+    }, 1000);
+  }, [pickupLocation, dropoffLocation]);
   
   // Navigate back
   const handleBack = () => {
@@ -105,24 +112,60 @@ const MapPickupDrop: React.FC = () => {
     }
   };
   
-  // Simulate using current location
-  const useCurrentLocation = () => {
+  // Use device geolocation - defined as a callback to avoid rules of hooks error
+  const getCurrentLocation = useCallback(() => {
     setIsLoading(true);
-    // Simulate geolocation delay
-    setTimeout(() => {
-      setPickupLocation({
-        id: 'current-location',
-        name: 'Current Location',
-        address: '123 Main Street, Sydney NSW 2000',
-        coordinate: { latitude: -33.8688, longitude: 151.2093 },
-      });
+    setLocationError(null);
+    
+    if ('geolocation' in navigator) {
+      navigator.geolocation.getCurrentPosition(
+        (position) => {
+          // Success handler
+          const { latitude, longitude } = position.coords;
+          
+          // Reverse geocode to get address (simulated here)
+          setPickupLocation({
+            id: 'current-location',
+            name: 'Current Location',
+            address: 'Your Current Location',
+            coordinate: { latitude, longitude },
+          });
+          
+          setIsLoading(false);
+          
+          if (dropoffLocation) {
+            calculateRoute();
+          }
+        },
+        (error) => {
+          // Error handler
+          console.error('Geolocation error:', error);
+          setIsLoading(false);
+          setLocationError('Could not access your location. Please check your device settings.');
+        },
+        { 
+          enableHighAccuracy: true,
+          timeout: 5000,
+          maximumAge: 0
+        }
+      );
+    } else {
       setIsLoading(false);
-      
-      if (dropoffLocation) {
-        calculateRoute();
-      }
-    }, 1000);
+      setLocationError('Geolocation is not supported by your browser');
+    }
+  }, [dropoffLocation, calculateRoute]);
+  
+  // Button handler for getting current location
+  const handleGetCurrentLocation = () => {
+    getCurrentLocation();
   };
+  
+  // Try to get user location when component mounts
+  useEffect(() => {
+    if (!pickupLocation) {
+      getCurrentLocation();
+    }
+  }, [pickupLocation, getCurrentLocation]);
   
   return (
     <Box sx={{ height: '100vh', display: 'flex', flexDirection: 'column' }}>
@@ -160,16 +203,16 @@ const MapPickupDrop: React.FC = () => {
         </Typography>
       </Paper>
       
-      {/* Map View (Placeholder) */}
+      {/* Simplified Map View */}
       <Box 
         sx={{ 
           flex: 1, 
           position: 'relative',
-          backgroundColor: '#e5e5e5',  // Placeholder color
+          backgroundColor: '#e9eef2',
           overflow: 'hidden'
         }}
       >
-        {/* This would be replaced with an actual map component */}
+        {/* This is a simplified map visualization */}
         <Box 
           sx={{ 
             position: 'absolute', 
@@ -180,15 +223,146 @@ const MapPickupDrop: React.FC = () => {
             display: 'flex',
             alignItems: 'center',
             justifyContent: 'center',
-            flexDirection: 'column',
-            color: '#666'
           }}
         >
-          <Typography variant="body1" sx={{ mb: 1 }}>
-            Map Placeholder
-          </Typography>
-          {isLoading && (
-            <CircularProgress size={28} color="primary" />
+          {isLoading ? (
+            <CircularProgress size={40} color="primary" />
+          ) : (
+            <Box sx={{ width: '100%', height: '100%', position: 'relative' }}>
+              {/* Simplified route visualization */}
+              {pickupLocation && dropoffLocation && routeInfo && (
+                <Box sx={{ width: '100%', height: '100%', position: 'absolute' }}>
+                  {/* Route line */}
+                  <Box
+                    sx={{
+                      position: 'absolute',
+                      top: '40%',
+                      left: '30%',
+                      width: '40%',
+                      height: '4px',
+                      backgroundColor: theme.palette.primary.main,
+                      transform: 'rotate(15deg)',
+                      transformOrigin: '0 0',
+                      borderRadius: '4px',
+                      boxShadow: '0 0 8px rgba(0,0,0,0.2)',
+                      '&:before': {
+                        content: '""',
+                        position: 'absolute',
+                        top: 0,
+                        left: 0,
+                        height: '100%',
+                        width: '100%',
+                        background: `linear-gradient(90deg, ${theme.palette.primary.light}, ${theme.palette.primary.main})`,
+                        animation: 'routeAnimation 1.5s infinite linear',
+                        borderRadius: '4px',
+                      },
+                      '@keyframes routeAnimation': {
+                        '0%': {
+                          opacity: 1,
+                          transform: 'translateX(-100%)'
+                        },
+                        '100%': {
+                          opacity: 0.6,
+                          transform: 'translateX(100%)'
+                        }
+                      }
+                    }}
+                  />
+                </Box>
+              )}
+              
+              {/* Pickup marker */}
+              {pickupLocation && (
+                <Box
+                  sx={{
+                    position: 'absolute',
+                    top: '40%',
+                    left: '30%',
+                    transform: 'translate(-50%, -50%)',
+                    zIndex: 2,
+                  }}
+                >
+                  <Box sx={{ 
+                    position: 'relative',
+                    display: 'flex',
+                    flexDirection: 'column',
+                    alignItems: 'center'
+                  }}>
+                    <LocationOnIcon 
+                      sx={{ 
+                        fontSize: 40, 
+                        color: theme.palette.primary.main,
+                        filter: 'drop-shadow(0 2px 2px rgba(0,0,0,0.3))'
+                      }} 
+                    />
+                    <Typography
+                      variant="caption"
+                      sx={{
+                        backgroundColor: 'rgba(255,255,255,0.9)',
+                        px: 1,
+                        py: 0.5,
+                        borderRadius: 1,
+                        fontWeight: 500,
+                        maxWidth: 120,
+                        textAlign: 'center',
+                        whiteSpace: 'nowrap',
+                        overflow: 'hidden',
+                        textOverflow: 'ellipsis',
+                        boxShadow: '0 1px 3px rgba(0,0,0,0.2)'
+                      }}
+                    >
+                      {pickupLocation.name}
+                    </Typography>
+                  </Box>
+                </Box>
+              )}
+              
+              {/* Dropoff marker */}
+              {dropoffLocation && (
+                <Box
+                  sx={{
+                    position: 'absolute',
+                    top: '45%',
+                    left: '70%',
+                    transform: 'translate(-50%, -50%)',
+                    zIndex: 2,
+                  }}
+                >
+                  <Box sx={{ 
+                    position: 'relative',
+                    display: 'flex',
+                    flexDirection: 'column',
+                    alignItems: 'center'
+                  }}>
+                    <LocationOnIcon 
+                      sx={{ 
+                        fontSize: 40, 
+                        color: '#e53935',
+                        filter: 'drop-shadow(0 2px 2px rgba(0,0,0,0.3))'
+                      }} 
+                    />
+                    <Typography
+                      variant="caption"
+                      sx={{
+                        backgroundColor: 'rgba(255,255,255,0.9)',
+                        px: 1,
+                        py: 0.5,
+                        borderRadius: 1,
+                        fontWeight: 500,
+                        maxWidth: 120,
+                        textAlign: 'center',
+                        whiteSpace: 'nowrap',
+                        overflow: 'hidden',
+                        textOverflow: 'ellipsis',
+                        boxShadow: '0 1px 3px rgba(0,0,0,0.2)'
+                      }}
+                    >
+                      {dropoffLocation.name}
+                    </Typography>
+                  </Box>
+                </Box>
+              )}
+            </Box>
           )}
         </Box>
         
@@ -202,7 +376,7 @@ const MapPickupDrop: React.FC = () => {
           }}
         >
           <IconButton
-            onClick={useCurrentLocation}
+            onClick={handleGetCurrentLocation}
             sx={{
               bgcolor: '#ffffff',
               boxShadow: '0 2px 6px rgba(0,0,0,0.2)',
@@ -251,60 +425,23 @@ const MapPickupDrop: React.FC = () => {
               },
             }}
           >
-            <Box
-              sx={{
-                width: 32,
-                height: 32,
-                borderRadius: '50%',
-                bgcolor: theme.palette.success.main,
-                display: 'flex',
-                alignItems: 'center',
-                justifyContent: 'center',
-                color: '#ffffff',
-                mr: 2,
-              }}
-            >
-              <LocationOnIcon fontSize="small" />
-            </Box>
+            <LocationOnIcon 
+              sx={{ 
+                color: theme.palette.primary.main, 
+                mr: 1.5,
+                fontSize: 28
+              }} 
+            />
             <Box sx={{ flex: 1 }}>
-              <Typography
-                variant="body2"
-                sx={{
-                  color: '#666',
-                  fontSize: '12px',
-                  mb: 0.5,
-                }}
-              >
-                Pickup Location
-              </Typography>
-              <Typography
-                variant="body1"
-                sx={{
-                  fontWeight: 500,
-                  fontSize: '14px',
-                  color: pickupLocation ? '#000000' : '#9e9e9e',
-                }}
-              >
-                {pickupLocation ? pickupLocation.name : 'Select pickup location'}
+              <Typography variant="subtitle2" sx={{ fontWeight: 500, mb: 0.2 }}>
+                {pickupLocation ? pickupLocation.name : 'Set Pickup Location'}
               </Typography>
               {pickupLocation && (
-                <Typography
-                  variant="body2"
-                  sx={{
-                    color: '#666',
-                    fontSize: '12px',
-                    mt: 0.5,
-                    maxWidth: '100%',
-                    overflow: 'hidden',
-                    textOverflow: 'ellipsis',
-                    whiteSpace: 'nowrap',
-                  }}
-                >
+                <Typography variant="caption" color="text.secondary" noWrap>
                   {pickupLocation.address}
                 </Typography>
               )}
             </Box>
-            <NavigateNextIcon color="action" />
           </Paper>
 
           {/* Dropoff Location Input */}
@@ -322,64 +459,27 @@ const MapPickupDrop: React.FC = () => {
               bgcolor: dropoffLocation ? '#fff5f5' : '#ffffff',
               transition: 'all 0.2s ease',
               '&:hover': {
-                bgcolor: dropoffLocation ? '#ffe6e6' : '#f5f5f5',
+                bgcolor: dropoffLocation ? '#ffebeb' : '#f5f5f5',
               },
             }}
           >
-            <Box
-              sx={{
-                width: 32,
-                height: 32,
-                borderRadius: '50%',
-                bgcolor: theme.palette.error.main,
-                display: 'flex',
-                alignItems: 'center',
-                justifyContent: 'center',
-                color: '#ffffff',
-                mr: 2,
-              }}
-            >
-              <LocationOnIcon fontSize="small" />
-            </Box>
+            <LocationOnIcon 
+              sx={{ 
+                color: '#e53935', 
+                mr: 1.5,
+                fontSize: 28 
+              }} 
+            />
             <Box sx={{ flex: 1 }}>
-              <Typography
-                variant="body2"
-                sx={{
-                  color: '#666',
-                  fontSize: '12px',
-                  mb: 0.5,
-                }}
-              >
-                Dropoff Location
-              </Typography>
-              <Typography
-                variant="body1"
-                sx={{
-                  fontWeight: 500,
-                  fontSize: '14px',
-                  color: dropoffLocation ? '#000000' : '#9e9e9e',
-                }}
-              >
-                {dropoffLocation ? dropoffLocation.name : 'Select dropoff location'}
+              <Typography variant="subtitle2" sx={{ fontWeight: 500, mb: 0.2 }}>
+                {dropoffLocation ? dropoffLocation.name : 'Set Dropoff Location'}
               </Typography>
               {dropoffLocation && (
-                <Typography
-                  variant="body2"
-                  sx={{
-                    color: '#666',
-                    fontSize: '12px',
-                    mt: 0.5,
-                    maxWidth: '100%',
-                    overflow: 'hidden',
-                    textOverflow: 'ellipsis',
-                    whiteSpace: 'nowrap',
-                  }}
-                >
+                <Typography variant="caption" color="text.secondary" noWrap>
                   {dropoffLocation.address}
                 </Typography>
               )}
             </Box>
-            <NavigateNextIcon color="action" />
           </Paper>
 
           {/* Route Information */}
@@ -388,53 +488,63 @@ const MapPickupDrop: React.FC = () => {
               sx={{ 
                 display: 'flex', 
                 alignItems: 'center', 
-                justifyContent: 'center',
-                gap: 3,
-                mb: 2.5,
-                mt: 1
+                justifyContent: 'space-around',
+                mb: 2,
+                p: 1.5,
+                borderRadius: 2,
+                backgroundColor: '#f5f5f5' 
               }}
             >
               <Box sx={{ display: 'flex', alignItems: 'center' }}>
-                <StraightenIcon sx={{ color: '#666', mr: 1, fontSize: 18 }} />
-                <Typography variant="body2" sx={{ fontWeight: 500 }}>
-                  {routeInfo.distance}
+                <AccessTimeIcon fontSize="small" sx={{ color: 'text.secondary', mr: 0.5 }} />
+                <Typography variant="body2" fontWeight={500}>
+                  {routeInfo.duration}
                 </Typography>
               </Box>
               <Box sx={{ display: 'flex', alignItems: 'center' }}>
-                <AccessTimeIcon sx={{ color: '#666', mr: 1, fontSize: 18 }} />
-                <Typography variant="body2" sx={{ fontWeight: 500 }}>
-                  {routeInfo.duration}
+                <StraightenIcon fontSize="small" sx={{ color: 'text.secondary', mr: 0.5 }} />
+                <Typography variant="body2" fontWeight={500}>
+                  {routeInfo.distance}
                 </Typography>
               </Box>
             </Box>
           )}
 
-          {/* Confirm Button */}
+          {/* Continue Button */}
           <Button
             variant="contained"
             fullWidth
             disabled={!pickupLocation || !dropoffLocation}
+            endIcon={<NavigateNextIcon />}
             onClick={handleProceed}
             sx={{
-              bgcolor: theme.palette.primary.main,
-              color: '#ffffff',
               py: 1.5,
               borderRadius: 2,
               textTransform: 'none',
-              fontWeight: 600,
-              '&:hover': {
-                bgcolor: theme.palette.primary.dark,
-              },
-              '&.Mui-disabled': {
-                bgcolor: '#e0e0e0',
-                color: '#9e9e9e',
-              },
+              fontWeight: 500,
             }}
           >
-            Confirm Locations
+            Continue to Quote
           </Button>
         </Box>
       </Drawer>
+      
+      {/* Location Error Snackbar */}
+      <Snackbar 
+        open={!!locationError} 
+        autoHideDuration={6000} 
+        onClose={() => setLocationError(null)}
+        anchorOrigin={{ vertical: 'top', horizontal: 'center' }}
+      >
+        <Alert 
+          onClose={() => setLocationError(null)} 
+          severity="warning" 
+          variant="filled"
+          sx={{ width: '100%' }}
+        >
+          {locationError}
+        </Alert>
+      </Snackbar>
     </Box>
   );
 };
