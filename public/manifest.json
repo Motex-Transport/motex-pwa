@@ -1,0 +1,71 @@
+{
+  "short_name": "Motex",
+  "name": "Motex Transport",
+  "icons": [
+    {
+      "src": "favicon.ico",
+      "sizes": "64x64 32x32 24x24 16x16",
+      "type": "image/x-icon"
+    },
+    {
+      "src": "logo192.png",
+      "type": "image/png",
+      "sizes": "192x192"
+    },
+    {
+      "src": "logo512.png",
+      "type": "image/png",
+      "sizes": "512x512"
+    },
+    {
+      "src": "MOTEX+Logo.png",
+      "type": "image/png",
+      "sizes": "any"
+    },
+    {
+      "src": "logo192.png",
+      "type": "image/png",
+      "sizes": "192x192",
+      "purpose": "maskable"
+    }
+  ],
+  "start_url": ".",
+  "scope": "/",
+  "display": "standalone",
+  "theme_color": "#DE1F27",
+  "background_color": "#ffffff",
+  "description": "Sydney's Premier Courier Service - Fast, reliable, and personalized courier solutions",
+  "orientation": "any",
+  "screenshots": [
+    {
+      "src": "services-15.jpg",
+      "type": "image/jpg",
+      "sizes": "1280x720",
+      "form_factor": "wide"
+    },
+    {
+      "src": "gallery 3.jpg",
+      "type": "image/jpg",
+      "sizes": "720x1280",
+      "form_factor": "narrow"
+    }
+  ],
+  "shortcuts": [
+    {
+      "name": "Get Quote",
+      "short_name": "Quote",
+      "description": "Get an instant quote for your delivery",
+      "url": "/instant-quote",
+      "icons": [{ "src": "logo192.png", "sizes": "192x192" }]
+    },
+    {
+      "name": "Contact Us",
+      "short_name": "Contact",
+      "description": "Contact Motex Transport",
+      "url": "/contact-us",
+      "icons": [{ "src": "logo192.png", "sizes": "192x192" }]
+    }
+  ],
+  "id": "motex-transport-pwa",
+  "categories": ["business", "logistics", "transport"]
+} 

@@ -1,0 +1,57 @@
+<svg width="200" height="200" viewBox="0 0 200 200" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <g clip-path="url(#clip0_123_456)">
+    <!-- Door Frame -->
+    <rect x="50" y="40" width="40" height="120" rx="2" stroke="black" stroke-width="3" fill="#77C9A5"/>
+    <rect x="55" y="45" width="30" height="80" rx="1" stroke="black" stroke-width="2" fill="#A2E0C6"/>
+    
+    <!-- Window Frame -->
+    <rect x="110" y="50" width="55" height="70" rx="30" stroke="black" stroke-width="3" fill="#77C9A5"/>
+    <rect x="115" y="55" width="45" height="60" rx="25" stroke="black" stroke-width="2" fill="#A2E0C6"/>
+    
+    <!-- Packages -->
+    <rect x="75" y="140" width="20" height="20" fill="#F8B26A" stroke="black" stroke-width="2"/>
+    <rect x="75" y="130" width="20" height="10" fill="#F8B26A" stroke="black" stroke-width="2"/>
+    
+    <!-- Tree -->
+    <rect x="30" y="120" width="10" height="40" fill="#4F3829" stroke="black" stroke-width="1"/>
+    <circle cx="35" cy="110" r="20" fill="#7ED957" stroke="black" stroke-width="2"/>
+    
+    <!-- Person 1 - Orange outfit -->
+    <circle cx="140" cy="120" r="15" fill="#FFD39A" stroke="black" stroke-width="2"/>
+    <path d="M140 135V160" stroke="black" stroke-width="3" stroke-linecap="round"/>
+    <path d="M155 140C155 140 150 137 140 137C130 137 125 140 125 140" stroke="black" stroke-width="3" stroke-linecap="round"/>
+    <path d="M140 160L130 180" stroke="black" stroke-width="3" stroke-linecap="round"/>
+    <path d="M140 160L150 180" stroke="black" stroke-width="3" stroke-linecap="round"/>
+    <rect x="125" y="140" width="30" height="40" rx="2" fill="#FFB347" stroke="black" stroke-width="2"/>
+    <path d="M134 117C134 117 137 119 140 119C143 119 146 117 146 117" stroke="black" stroke-width="1"/>
+    <circle cx="135" cy="113" r="1" fill="black"/>
+    <circle cx="145" cy="113" r="1" fill="black"/>
+    <path d="M138 127L142 127" stroke="#F96A51" stroke-width="5" stroke-linecap="round"/>
+    <path d="M135 105C135 105 138 95 145 105" stroke="black" stroke-width="2"/>
+
+    <!-- Person 2 - Blue outfit -->
+    <circle cx="70" cy="95" r="15" fill="#FFD39A" stroke="black" stroke-width="2"/>
+    <path d="M70 110V135" stroke="black" stroke-width="3" stroke-linecap="round"/>
+    <path d="M55 115C55 115 60 112 70 112C80 112 85 115 85 115" stroke="black" stroke-width="3" stroke-linecap="round"/>
+    <path d="M70 135L60 155" stroke="black" stroke-width="3" stroke-linecap="round"/>
+    <path d="M70 135L80 155" stroke="black" stroke-width="3" stroke-linecap="round"/>
+    <rect x="55" y="115" width="30" height="40" rx="2" fill="#4298F5" stroke="black" stroke-width="2"/>
+    <path d="M64 92C64 92 67 94 70 94C73 94 76 92 76 92" stroke="black" stroke-width="1"/>
+    <circle cx="65" cy="88" r="1" fill="black"/>
+    <circle cx="75" cy="88" r="1" fill="black"/>
+    <path d="M68 102L72 102" stroke="#F96A51" stroke-width="5" stroke-linecap="round"/>
+    <path d="M65 80C65 80 68 70 75 80" stroke="black" stroke-width="2"/>
+
+    <!-- Lamp Post -->
+    <rect x="180" y="70" width="5" height="100" fill="#FBCB32" stroke="black" stroke-width="1"/>
+    <rect x="170" y="70" width="25" height="15" rx="2" fill="#FBCB32" stroke="black" stroke-width="1"/>
+    
+    <!-- Base Line -->
+    <line x1="10" y1="180" x2="190" y2="180" stroke="black" stroke-width="2"/>
+  </g>
+  <defs>
+    <clipPath id="clip0_123_456">
+      <rect width="200" height="200" fill="white"/>
+    </clipPath>
+  </defs>
+</svg> 

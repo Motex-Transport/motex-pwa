@@ -16,25 +16,40 @@ import GalleryPage from './pages/GalleryPage';
 import AboutUsPage from './pages/AboutUsPage';
 import ContactUsPage from './pages/ContactUsPage';
 import ServicesPage from './pages/ServicesPage';
-// Removed AddToHomeScreen import
+import PwaWrapper from './components/pwa/PwaWrapper';
+import PwaDetector from './components/pwa/PwaDetector';
+import InstallPwaBanner from './components/pwa/InstallPwaBanner';
+import WindowsInstallPrompt from './components/pwa/WindowsInstallPrompt';
+
+// Check if we're in development mode
+const isDevelopment = process.env.NODE_ENV === 'development' || 
+                     window.location.hostname === 'localhost' ||
+                     window.location.hostname === '127.0.0.1';
 
 function App() {
+  // Check if the app is running on Windows
+  const isWindows = /Windows NT/.test(window.navigator.userAgent);
+  
   return (
     <HelmetProvider>
       <ThemeProvider theme={theme}>
         <CssBaseline />
-        <Router>
-          <Routes>
-            <Route path="/" element={<LandingPage />} />
-            <Route path="/services" element={<ServicesPage />} />
-            <Route path="/about-us" element={<AboutUsPage />} />
-            <Route path="/instant-quote" element={<InstantQuotePage />} />
-            <Route path="/gallery" element={<GalleryPage />} />
-            <Route path="/contact-us" element={<ContactUsPage />} />
-            <Route path="/quote-success" element={<QuoteSuccessPage />} />
-          </Routes>
-          {/* Removed AddToHomeScreen component */}
-        </Router>
+        <PwaWrapper>
+          <Router>
+            <Routes>
+              <Route path="/" element={<LandingPage />} />
+              <Route path="/services" element={<ServicesPage />} />
+              <Route path="/about-us" element={<AboutUsPage />} />
+              <Route path="/instant-quote" element={<InstantQuotePage />} />
+              <Route path="/gallery" element={<GalleryPage />} />
+              <Route path="/contact-us" element={<ContactUsPage />} />
+              <Route path="/quote-success" element={<QuoteSuccessPage />} />
+            </Routes>
+          </Router>
+          <InstallPwaBanner />
+          {isWindows && <WindowsInstallPrompt />}
+        </PwaWrapper>
+        {isDevelopment && <PwaDetector />}
       </ThemeProvider>
     </HelmetProvider>
   );

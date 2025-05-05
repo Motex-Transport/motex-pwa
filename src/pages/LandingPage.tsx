@@ -49,6 +49,7 @@ import {
 } from '@mui/icons-material';
 
 import { motion, AnimatePresence, useInView } from 'framer-motion';
+import InstallPwaButton from '../components/pwa/InstallPwaButton';
 
 // Import fonts
 // Oswald font is loaded via Google Fonts in embedded code
@@ -571,6 +572,12 @@ const LandingPage = () => {
     if (isMobile) return;
     
     const handleMouseMove = (e: MouseEvent) => {
+      // Update gradient position
+      if (gradientRef.current) {
+        gradientRef.current.style.left = `${e.clientX}px`;
+        gradientRef.current.style.top = `${e.clientY}px`;
+      }
+      
       // Use requestAnimationFrame to optimize performance
       requestAnimationFrame(() => {
         setMousePos({ 
@@ -638,6 +645,9 @@ const LandingPage = () => {
     
     return () => clearInterval(interval);
   }, [handleNextTestimonialSlide, isMobile]);
+
+  // Add gradientRef definition
+  const gradientRef = useRef<HTMLDivElement>(null);
 
   return (
     <>
@@ -870,67 +880,111 @@ const LandingPage = () => {
       
       {/* Update the Hero section to fix mobile text cropping */}
       <Box 
-        sx={{ 
-          backgroundImage: 'url("/PHOTO-2025-03-22-21-36-54_1.jpg")',
+        sx={{
+          backgroundImage: 'url(/bg-1.jpg)',
           backgroundSize: 'cover',
           backgroundPosition: 'center',
-          backgroundRepeat: 'no-repeat',
+          minHeight: '100vh',
           position: 'relative',
           display: 'flex',
-          alignItems: 'flex-start',
+          flexDirection: 'column',
+          alignItems: 'center',
           justifyContent: 'center',
-          minHeight: { xs: '40.47vh', md: '55vh' },
-          overflow: 'hidden',
-          zIndex: 10,
+          py: { xs: 8, md: 12 },
           '&::before': {
             content: '""',
             position: 'absolute',
             top: 0,
             left: 0,
-            right: 0,
-            bottom: 0,
-            backgroundColor: 'rgba(0, 0, 0, 0.25)',
-            zIndex: 1
-          }
+            width: '100%',
+            height: '100%',
+            backgroundColor: 'rgba(0, 0, 0, 0.65)',
+            zIndex: 1,
+          },
         }}
       >
-        <Container maxWidth="lg" sx={{ position: 'relative', zIndex: 2, pt: 2 }}>
-          <motion.div
-            initial={{ opacity: 0, y: 30 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.8 }}
-            style={{ 
-              display: 'flex', 
-              flexDirection: 'column',
-              justifyContent: 'flex-start', 
-              alignItems: 'center' 
+        <GradientLight ref={gradientRef} sx={{ zIndex: 1 }} />
+
+        <Container sx={{ position: 'relative', zIndex: 2, textAlign: 'center' }}>
+          <Box sx={{ mb: 3 }}>
+            <img 
+              src="/MOTEX+Logo.png" 
+              alt="Motex Transport Logo" 
+              style={{ 
+                maxWidth: '280px', 
+                width: '100%',
+                filter: 'drop-shadow(0 4px 8px rgba(0,0,0,0.5))'
+              }} 
+            />
+          </Box>
+
+          <Typography 
+            variant="h1" 
+            sx={{ 
+              fontFamily: 'Oswald, sans-serif',
+              fontWeight: 700,
+              fontSize: { xs: '2.5rem', sm: '3.5rem', md: '4.5rem' },
+              mb: 2,
+              textTransform: 'uppercase',
+              letterSpacing: '0.05em',
+              textShadow: '0 4px 8px rgba(0,0,0,0.8)',
+              background: 'linear-gradient(90deg, #FFFFFF, #F5F5F5)',
+              WebkitBackgroundClip: 'text',
+              WebkitTextFillColor: 'transparent',
+              color: '#FFFFFF',
             }}
           >
-            <Typography 
-              variant="h2" 
-              align="center" 
-              sx={{ 
-                mb: 1,
-                fontWeight: 800,
-                color: 'transparent',
-                fontFamily: '"Bebas Neue", sans-serif',
-                fontSize: { xs: '45px', sm: '55px', md: '85px', lg: '95px' },
-                letterSpacing: { xs: '1px', sm: '2px', md: '3px' },
-                WebkitTextStroke: { xs: `0.5px ${RED_COLOR}`, sm: `1.5px ${RED_COLOR}`, md: `2px ${RED_COLOR}` },
-                textStroke: { xs: `0.5px ${RED_COLOR}`, sm: `1.5px ${RED_COLOR}`, md: `2px ${RED_COLOR}` },
-                mt: 0
+            Sydney's Premier<br />Courier Service
+          </Typography>
+
+          <Typography 
+            variant="h6" 
+            sx={{ 
+              color: '#f5f5f5',
+              mb: 3,
+              fontWeight: 300,
+              maxWidth: '600px', 
+              mx: 'auto',
+              fontSize: { xs: '1rem', sm: '1.15rem' },
+              textShadow: '0 2px 4px rgba(0,0,0,0.5)'
+            }}
+          >
+            Fast, reliable, and personalized courier solutions for businesses and individuals across the Sydney Metropolitan area.
+          </Typography>
+
+          <Box 
+            sx={{ 
+              display: 'flex', 
+              flexDirection: { xs: 'column', sm: 'row' }, 
+              gap: 2, 
+              justifyContent: 'center',
+              mt: 4
+            }}
+          >
+            <Button
+              variant="contained"
+              onClick={() => navigate('/instant-quote')}
+              sx={{
+                py: 1.5,
+                px: 4,
+                fontSize: '1.1rem',
+                background: 'linear-gradient(45deg, #DE1F27 30%, #FF8E53 90%)',
+                border: 0,
+                borderRadius: 50,
+                boxShadow: '0 3px 5px 2px rgba(255, 105, 135, .3)',
+                color: 'white',
+                fontWeight: 'bold',
+                textTransform: 'none',
+                '&:hover': {
+                  background: 'linear-gradient(45deg, #D31920 30%, #FF7E43 90%)',
+                }
               }}
             >
-              <TextFade direction="down" staggerChildren={0.03}>
-                <div style={{ whiteSpace: 'nowrap' }}>
-                  Above and Beyond with 
-                </div>
-                <div style={{ whiteSpace: 'nowrap', marginTop: '-10px' }}>
-                  Motex Transport
-                </div>
-              </TextFade>
-            </Typography>
-          </motion.div>
+              Get An Instant Quote
+            </Button>
+            
+            <InstallPwaButton buttonText="Install Mobile App" />
+          </Box>
         </Container>
       </Box>
 

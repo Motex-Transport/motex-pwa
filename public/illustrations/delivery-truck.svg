@@ -1,0 +1,21 @@
+<svg width="200" height="200" viewBox="0 0 200 200" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <g clip-path="url(#clip0_123_456)">
+    <path d="M160 72H140V50C140 44.4772 135.523 40 130 40H30C24.4772 40 20 44.4772 20 50V132C20 137.523 24.4772 142 30 142H40" stroke="black" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/>
+    <path d="M152.857 142H60C54.4772 142 50 137.523 50 132V87C50 81.4772 54.4772 77 60 77H140L164 104V132C164 137.523 159.523 142 153.857 142H152.857Z" fill="#4298F5" stroke="black" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/>
+    <path d="M50 92H140" stroke="black" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/>
+    <circle cx="60" cy="142" r="15" fill="#4298F5" stroke="black" stroke-width="4"/>
+    <circle cx="142" cy="142" r="15" fill="#4298F5" stroke="black" stroke-width="4"/>
+    <path d="M68 75V107H91V75H68Z" fill="#4298F5" stroke="black" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/>
+    <path d="M97 75V107H120V75H97Z" fill="#4298F5" stroke="black" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/>
+    <path d="M126 107V86H135V107H126Z" fill="#EF4444" stroke="black" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/>
+    <rect x="87" y="86" width="8" height="8" fill="#C5C5C5" stroke="black" stroke-width="2"/>
+    <rect x="100" y="86" width="8" height="8" fill="#C5C5C5" stroke="black" stroke-width="2"/>
+    <rect x="142.5" y="133.5" width="9" height="3" rx="1.5" transform="rotate(90 142.5 133.5)" fill="black"/>
+    <rect x="60.5" y="133.5" width="9" height="3" rx="1.5" transform="rotate(90 60.5 133.5)" fill="black"/>
+  </g>
+  <defs>
+    <clipPath id="clip0_123_456">
+      <rect width="200" height="200" fill="white"/>
+    </clipPath>
+  </defs>
+</svg> 
