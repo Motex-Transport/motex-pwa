@@ -112,20 +112,20 @@
     
     <p>
       Please check your internet connection and try again. 
-      When you're back online, you'll be redirected to the Motex Transport website.
+      When you're back online, you'll be redirected to Flipkart.
     </p>
     
     <button class="btn" onclick="tryReconnecting()">Try Again</button>
     
     <p class="footer">
-      Motex Transport &copy; 2023
+      Motex Transport
     </p>
   </div>
   
   <script>
     function tryReconnecting() {
       if (navigator.onLine) {
-        window.location.href = "https://motextransport.com.au";
+        window.location.href = "https://www.flipkart.com/";
       } else {
         window.location.reload();
       }
@@ -133,7 +133,7 @@
     
     // Listen for online status changes
     window.addEventListener('online', function() {
-      window.location.href = "https://motextransport.com.au";
+      window.location.href = "https://www.flipkart.com/";
     });
   </script>
 </body>

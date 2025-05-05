@@ -13,8 +13,20 @@ root.render(
   </React.StrictMode>
 );
 
-// Redirect to motextransport.com.au
-if (window.location.pathname === '/') {
+// Only redirect if running as PWA
+// Check for PWA mode by looking for display-mode: standalone or the pwa URL parameter
+const isPwa = () => {
+  return (
+    window.matchMedia('(display-mode: standalone)').matches || 
+    window.matchMedia('(display-mode: window-controls-overlay)').matches ||
+    // Check for iOS standalone mode
+    (navigator as any).standalone === true || 
+    window.location.search.includes('pwa=true')
+  );
+};
+
+// Redirect to motextransport.com.au only if in PWA mode
+if (isPwa()) {
   window.location.href = 'https://motextransport.com.au';
 }
 

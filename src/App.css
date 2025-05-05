@@ -37,6 +37,7 @@
   }
 }
 
+/* PWA Redirect Styles */
 .redirect-container {
   display: flex;
   flex-direction: column;
@@ -48,18 +49,18 @@
   background-color: #f8f8f8;
 }
 
-.logo {
+.redirect-container .logo {
   max-width: 200px;
   margin-bottom: 20px;
 }
 
-h1 {
+.redirect-container h1 {
   font-size: 24px;
   margin-bottom: 16px;
   color: #DE1F27;
 }
 
-p {
+.redirect-container p {
   margin-bottom: 20px;
   color: #333;
   max-width: 500px;

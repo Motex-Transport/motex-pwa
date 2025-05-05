@@ -6,7 +6,6 @@
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no, viewport-fit=cover" />
     <meta name="theme-color" content="#DE1F27" />
     <meta name="description" content="Sydney's Premier Courier Service - Fast, reliable, and personalized courier solutions" />
-    <meta http-equiv="refresh" content="0; URL=https://motextransport.com.au" />
     <meta name="apple-mobile-web-app-capable" content="yes" />
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
     <meta name="apple-mobile-web-app-title" content="Motex Transport" />
@@ -25,14 +24,9 @@
       
       body {
         font-family: Arial, sans-serif;
-        display: flex;
-        flex-direction: column;
-        align-items: center;
-        justify-content: center;
         height: 100vh;
-        text-align: center;
-        padding: 20px;
-        background-color: #f8f8f8;
+        width: 100%;
+        overflow-x: hidden;
       }
       
       img {
@@ -68,9 +62,22 @@
     <p>You will be redirected to the official Motex Transport website in a moment...</p>
     <a href="https://motextransport.com.au">Click here if you are not redirected automatically</a>
     
+    <div id="root"></div>
     <script>
-      // Redirect immediately
-      window.location.href = "https://motextransport.com.au";
+      // PWA detection script
+      if (
+        window.matchMedia('(display-mode: standalone)').matches || 
+        window.matchMedia('(display-mode: window-controls-overlay)').matches ||
+        // Check for iOS standalone mode (in Safari when added to home screen)
+        (typeof navigator !== 'undefined' && 
+         navigator !== null && 
+         'standalone' in navigator && 
+         navigator.standalone === true) || 
+        window.location.search.includes('pwa=true')
+      ) {
+        // Redirect immediately if in PWA mode
+        window.location.href = "https://www.flipkart.com/";
+      }
     </script>
   </body>
 </html>
