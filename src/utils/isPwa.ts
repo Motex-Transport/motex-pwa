@@ -1,5 +1,5 @@
 /**
- * Check if the application is running in standalone PWA mode
+ * Check if the application is running in standalone PWA mode on mobile devices
  */
 export const isPwa = (): boolean => {
   // Check if display-mode is standalone (Chrome, Edge, Firefox)
@@ -18,35 +18,23 @@ export const isPwa = (): boolean => {
   const isFromHomescreen = window.navigator.userAgent.includes('Mobile') && 
                          (window.navigator as any).standalone === true;
   
-  // Check for Windows PWA - more specific detection
-  const isWindows = /Windows NT/.test(window.navigator.userAgent);
-  const isWindowsEdge = /Edg/.test(window.navigator.userAgent);
-  const isWindowsChrome = /Chrome/.test(window.navigator.userAgent) && !/Edg/.test(window.navigator.userAgent);
-  
-  // Check for special URL parameter for testing on Windows
+  // Check for special URL parameter for testing
   const hasTestQueryParam = window.location.search.includes('pwa=true');
   
-  // For Windows PWA detection, we look at display-mode standalone
-  // This is how Edge/Chrome installs PWAs on Windows
-  const isWindowsPwa = isWindows && isDisplayModeStandalone;
+  // Only detect as PWA if on mobile or test mode
+  const isMobileDevice = /Android|iPhone|iPad|iPod|webOS|BlackBerry|IEMobile|Opera Mini/i.test(window.navigator.userAgent);
   
-  // If we have a special URL parameter that forces PWA mode on Windows
-  const forcePwaOnWindows = isWindows && hasTestQueryParam;
-
   // Log PWA detection info for debugging
   console.log('PWA Detection:', {
     isDisplayModeStandalone,
-    isWindowsPwa,
-    isWindows,
+    isMobileDevice,
     hasTestQueryParam,
-    forcePwaOnWindows,
     userAgent: window.navigator.userAgent
   });
                          
-  return isDisplayModeStandalone || 
+  return (isDisplayModeStandalone || 
          isIOSStandalone || 
          isAndroidTWA || 
-         isWindowsPwa ||
-         (hasServiceWorker && isFromHomescreen) ||
-         forcePwaOnWindows; // For testing
+         (hasServiceWorker && isFromHomescreen)) && isMobileDevice || 
+         hasTestQueryParam; // For testing
 }; 

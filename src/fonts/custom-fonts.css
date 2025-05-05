@@ -1,6 +1,9 @@
 /* Import Special Gothic Expanded One font */
 @import url('https://fonts.googleapis.com/css2?family=Special+Gothic+Expanded+One&display=swap');
 
+/* Import Poppins font with various weights */
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap');
+
 /* Fallback for Special Gothic Expanded One */
 @font-face {
   font-family: 'Special Gothic Expanded One';
@@ -8,4 +11,9 @@
   font-weight: 400;
   font-display: swap;
   src: url(https://fonts.gstatic.com/s/specialgothicexpandedone/v1/0Qmk7w_TrIhpkGmiwdkbx0S4BXNBn64tPRTwR3S24D7EGg.ttf) format('truetype');
+}
+
+/* Apply Poppins as default font for the app */
+body {
+  font-family: 'Poppins', sans-serif;
 }

@@ -35,17 +35,23 @@
   "theme_color": "#DE1F27",
   "background_color": "#ffffff",
   "description": "Sydney's Premier Courier Service - Fast, reliable, and personalized courier solutions",
-  "orientation": "any",
+  "orientation": "portrait",
   "screenshots": [
     {
-      "src": "services-15.jpg",
-      "type": "image/jpg",
-      "sizes": "1280x720",
-      "form_factor": "wide"
+      "src": "1 motex.png",
+      "type": "image/png",
+      "sizes": "720x1280",
+      "form_factor": "narrow"
     },
     {
-      "src": "gallery 3.jpg",
-      "type": "image/jpg",
+      "src": "2 motex.png",
+      "type": "image/png",
+      "sizes": "720x1280",
+      "form_factor": "narrow"
+    },
+    {
+      "src": "3 motex.png",
+      "type": "image/png",
       "sizes": "720x1280",
       "form_factor": "narrow"
     }

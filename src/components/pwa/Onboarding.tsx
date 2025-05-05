@@ -22,24 +22,24 @@ const Onboarding: React.FC<OnboardingProps> = ({ onComplete }) => {
   // Define onboarding slides with content matching the screenshots
   const slides = [
     {
-      title: "Book Transport in Seconds",
-      description: "From parcels to premium rides — get started effortlessly.",
-      icon: <img src="/illustrations/delivery-truck.svg" alt="Delivery Truck" style={{ width: 180, height: 180 }} />,
-      bgColor: "#fffff0", // Light yellow
+      title: "Equality for All",
+      description: "Everyone deserves the same great service",
+      image: "/1 motex.png",
+      bgColor: "#ffffff", 
       textColor: "#000000"
     },
     {
-      title: "Track Every Booking",
-      description: "Stay informed with real-time updates and booking status",
-      icon: <img src="/illustrations/location-tracking.svg" alt="Location Tracking" style={{ width: 180, height: 180 }} />,
-      bgColor: "#ffebee", // Light pink
+      title: "Fast Reliable Delivery",
+      description: "Your packages delivered on time, every time",
+      image: "/2 motex.png",
+      bgColor: "#ffffff",
       textColor: "#000000"
     },
     {
-      title: "We're With You Every Step",
-      description: "Transparent communication and real-time booking updates.",
-      icon: <img src="/illustrations/delivery-service.svg" alt="Delivery Service" style={{ width: 180, height: 180 }} />,
-      bgColor: "#e8f5e9", // Light green
+      title: "Your Location, Our Destination",
+      description: "Track your delivery in real-time with ease",
+      image: "/3 motex.png",
+      bgColor: "#ffffff",
       textColor: "#000000"
     }
   ];
@@ -75,54 +75,32 @@ const Onboarding: React.FC<OnboardingProps> = ({ onComplete }) => {
         transition: 'background-color 0.5s ease',
       }}
     >
-      {/* Top navigation - Next button and pagination dots */}
-      {activeStep < maxSteps - 1 && (
-        <Box 
-          sx={{ 
-            position: 'fixed', 
-            top: 16, 
-            right: 16, 
-            display: 'flex', 
-            alignItems: 'center',
-            justifyContent: 'center',
-            gap: 2,
-            zIndex: 10,
-          }}
-        >
-          <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 1 }}>
-            {[0, 1, 2].map((dot) => (
-              <Box
-                key={`dot-${dot}`}
-                sx={{
-                  width: 8,
-                  height: 8,
-                  borderRadius: '50%',
-                  backgroundColor: dot === activeStep ? '#000000' : 'rgba(0,0,0,0.3)',
-                }}
-              />
-            ))}
-          </Box>
-          <Button
-            onClick={handleNext}
-            variant="contained"
-            disableElevation
-            sx={{ 
-              bgcolor: '#000000',
-              color: '#ffffff',
-              borderRadius: 10,
-              px: 4,
-              textTransform: 'none',
-              fontWeight: 'medium',
-              fontSize: '1rem',
-              '&:hover': {
-                bgcolor: '#333333'
-              }
+      {/* Top navigation - pagination dots */}
+      <Box 
+        sx={{ 
+          position: 'fixed', 
+          top: 16, 
+          left: 0,
+          right: 0,
+          display: 'flex', 
+          alignItems: 'center',
+          justifyContent: 'center',
+          gap: 1,
+          zIndex: 10,
+        }}
+      >
+        {[0, 1, 2].map((dot) => (
+          <Box
+            key={`dot-${dot}`}
+            sx={{
+              width: 8,
+              height: 8,
+              borderRadius: '50%',
+              backgroundColor: dot === activeStep ? '#DE1F27' : 'rgba(0,0,0,0.3)',
             }}
-          >
-            Next
-          </Button>
-        </Box>
-      )}
+          />
+        ))}
+      </Box>
 
       <Swiper
         onSlideChange={handleStepChange}
@@ -142,23 +120,40 @@ const Onboarding: React.FC<OnboardingProps> = ({ onComplete }) => {
                 alignItems: 'center',
                 justifyContent: 'center',
                 textAlign: 'center',
-                px: 4,
-                pt: { xs: 12, sm: 14 }, // Increased top padding to make room for top nav
-                pb: 14, // Bottom padding for controls
+                px: 3,
+                py: 6,
               }}
             >
-              <Box sx={{ flex: 1, display: 'flex', alignItems: 'center', justifyContent: 'center', mb: 2 }}>
-                {step.icon}
+              <Box 
+                sx={{ 
+                  flexGrow: 1, 
+                  display: 'flex', 
+                  alignItems: 'center', 
+                  justifyContent: 'center', 
+                  width: '100%', 
+                  maxWidth: '400px',
+                  mb: 2
+                }}
+              >
+                <img 
+                  src={step.image} 
+                  alt={step.title} 
+                  style={{ 
+                    width: '100%', 
+                    maxHeight: '60vh',
+                    objectFit: 'contain'
+                  }} 
+                />
               </Box>
-              <Box sx={{ mb: 6 }}>
+              <Box sx={{ mb: 4 }}>
                 <Typography
-                  variant="h3"
+                  variant="h4"
                   sx={{
                     fontWeight: 'bold',
-                    mb: 2,
+                    mb: 1,
                     color: step.textColor,
                     fontFamily: '"Poppins", sans-serif',
-                    fontSize: { xs: '2rem', sm: '2.5rem' },
+                    fontSize: { xs: '1.75rem', sm: '2rem' },
                   }}
                 >
                   {step.title}
@@ -190,24 +185,46 @@ const Onboarding: React.FC<OnboardingProps> = ({ onComplete }) => {
           right: 0, 
           p: 3, 
           display: 'flex', 
-          justifyContent: activeStep === maxSteps - 1 ? 'center' : 'flex-start',
-          alignItems: 'center',
+          justifyContent: 'center',
           zIndex: 10,
         }}
       >
         {activeStep < maxSteps - 1 ? (
-          <Button
-            onClick={handleClose}
-            variant="text"
-            sx={{ 
-              color: '#000000',
-              fontWeight: 'medium',
-              textTransform: 'none',
-              fontSize: '1rem'
-            }}
-          >
-            Skip
-          </Button>
+          <Box sx={{ width: '100%', display: 'flex', justifyContent: 'space-between' }}>
+            <Button
+              onClick={handleClose}
+              variant="text"
+              sx={{ 
+                color: '#000000',
+                fontWeight: 'medium',
+                textTransform: 'none',
+                fontFamily: '"Poppins", sans-serif',
+                fontSize: '1rem'
+              }}
+            >
+              Skip
+            </Button>
+            <Button
+              onClick={handleNext}
+              variant="contained"
+              disableElevation
+              sx={{ 
+                bgcolor: '#DE1F27',
+                color: '#ffffff',
+                borderRadius: 8,
+                px: 4,
+                textTransform: 'none',
+                fontFamily: '"Poppins", sans-serif',
+                fontWeight: 'medium',
+                fontSize: '1rem',
+                '&:hover': {
+                  bgcolor: '#c41920'
+                }
+              }}
+            >
+              Next
+            </Button>
+          </Box>
         ) : (
           <Button
             onClick={onComplete}
@@ -215,19 +232,20 @@ const Onboarding: React.FC<OnboardingProps> = ({ onComplete }) => {
             disableElevation
             fullWidth
             sx={{ 
-              bgcolor: '#000000',
+              bgcolor: '#DE1F27',
               color: '#ffffff',
-              borderRadius: 10,
+              borderRadius: 8,
               py: 1.5,
               textTransform: 'none',
+              fontFamily: '"Poppins", sans-serif',
               fontWeight: 'medium',
               fontSize: '1.1rem',
               '&:hover': {
-                bgcolor: '#333333'
+                bgcolor: '#c41920'
               }
             }}
           >
-            Let's Start
+            Get Started
           </Button>
         )}
       </Box>

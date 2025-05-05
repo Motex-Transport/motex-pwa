@@ -7,8 +7,6 @@ interface SplashScreenProps {
 }
 
 const SplashScreen: React.FC<SplashScreenProps> = ({ onFinish }) => {
-  const isWindows = /Windows NT/.test(window.navigator.userAgent);
-  
   useEffect(() => {
     // Longer delay for first-time launch to ensure a good experience
     const timer = setTimeout(() => {
@@ -82,7 +80,7 @@ const SplashScreen: React.FC<SplashScreenProps> = ({ onFinish }) => {
               fontFamily: '"Poppins", sans-serif',
             }}
           >
-            {isWindows ? 'Windows App Experience' : 'Mobile App Experience'}
+            Sydney's Premier Courier Service
           </Typography>
         </motion.div>
       </Box>

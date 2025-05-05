@@ -2,6 +2,8 @@ import React, { useEffect } from 'react';
 import { usePwaDetection } from '../../hooks/usePwaDetection';
 import SplashScreen from './SplashScreen';
 import Onboarding from './Onboarding';
+import MobileHome from './MobileHome';
+import { useLocation } from 'react-router-dom';
 
 interface PwaWrapperProps {
   children: React.ReactNode;
@@ -11,11 +13,9 @@ interface PwaWrapperProps {
 const resetPwaFlow = () => {
   console.log('Resetting PWA flow...');
   localStorage.removeItem('pwa-onboarding-completed');
-  localStorage.removeItem('windows-pwa-onboarding-completed');
   localStorage.removeItem('pwa-banner-dismissed');
-  localStorage.removeItem('windows-install-prompt-dismissed');
   
-  // Add pwa=true to force Windows detection
+  // Force PWA testing mode
   const url = new URL(window.location.href);
   url.searchParams.set('pwa', 'true');
   window.location.href = url.toString();
@@ -25,12 +25,12 @@ const resetPwaFlow = () => {
 (window as any).resetPwaFlow = resetPwaFlow;
 
 const PwaWrapper: React.FC<PwaWrapperProps> = ({ children }) => {
+  const location = useLocation();
   const {
     isPwa: isPwaApp,
     showSplash,
     showOnboarding,
     hasSeenOnboarding,
-    isWindows,
     onSplashFinish,
     onOnboardingComplete
   } = usePwaDetection();
@@ -41,16 +41,15 @@ const PwaWrapper: React.FC<PwaWrapperProps> = ({ children }) => {
       isPwaApp, 
       showSplash, 
       showOnboarding, 
-      hasSeenOnboarding, 
-      isWindows 
+      hasSeenOnboarding
     });
     
     // Log if we're in standalone mode
     console.log('Standalone mode:', window.matchMedia('(display-mode: standalone)').matches);
     console.log('User agent:', window.navigator.userAgent);
-  }, [isPwaApp, showSplash, showOnboarding, hasSeenOnboarding, isWindows]);
+  }, [isPwaApp, showSplash, showOnboarding, hasSeenOnboarding]);
 
-  // Add URL parameter detection for testing on Windows
+  // Add URL parameter detection for testing
   useEffect(() => {
     // If the URL contains ?pwa=reset, clear the onboarding flags to test the flow again
     if (window.location.search.includes('pwa=reset')) {
@@ -58,18 +57,27 @@ const PwaWrapper: React.FC<PwaWrapperProps> = ({ children }) => {
     }
   }, []);
 
-  // For non-PWA or if already completed onboarding, just render children
-  if (!isPwaApp || hasSeenOnboarding) {
+  // For non-PWA, just render children
+  if (!isPwaApp) {
     return <>{children}</>;
   }
 
-  return (
-    <>
-      {showSplash && <SplashScreen onFinish={onSplashFinish} />}
-      {showOnboarding && <Onboarding onComplete={onOnboardingComplete} />}
-      {!showSplash && !showOnboarding && children}
-    </>
-  );
+  // Show splash or onboarding if needed
+  if (showSplash) {
+    return <SplashScreen onFinish={onSplashFinish} />;
+  }
+
+  if (showOnboarding) {
+    return <Onboarding onComplete={onOnboardingComplete} />;
+  }
+
+  // Use MobileHome only for the home route in PWA mode
+  if (location.pathname === '/' || location.pathname === '') {
+    return <MobileHome />;
+  }
+
+  // For other routes in PWA mode, show the normal content
+  return <>{children}</>;
 };
 
 export default PwaWrapper; 

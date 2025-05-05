@@ -2,11 +2,11 @@ import { createTheme } from '@mui/material/styles';
 
 const theme = createTheme({
   palette: {
-    mode: 'dark',
+    mode: 'light',
     primary: {
-      main: '#FF4E16',
-      light: '#FF8C42',
-      dark: '#FF2400',
+      main: '#DE1F27',
+      light: '#FF5252',
+      dark: '#C41920',
     },
     secondary: {
       main: '#FF2992',
@@ -14,33 +14,58 @@ const theme = createTheme({
       dark: '#C21B6F',
     },
     background: {
-      default: '#13111C',
-      paper: '#1E1A2A',
+      default: '#ffffff',
+      paper: '#ffffff',
     },
     text: {
-      primary: '#FF6B6B',
-      secondary: 'rgba(255, 107, 107, 0.7)',
+      primary: '#333333',
+      secondary: 'rgba(0, 0, 0, 0.6)',
     }
   },
   typography: {
-    fontFamily: '"Arial", "Helvetica", sans-serif',
+    fontFamily: '"Poppins", sans-serif',
     h1: {
-      fontFamily: '"Montserrat", sans-serif',
+      fontFamily: '"Poppins", sans-serif',
       fontWeight: 700,
       letterSpacing: '-0.01em',
     },
     h2: {
-      fontFamily: '"Montserrat", sans-serif',
+      fontFamily: '"Poppins", sans-serif',
       fontWeight: 700,
       letterSpacing: '-0.01em',
     },
     h3: {
-      fontFamily: '"Montserrat", sans-serif',
+      fontFamily: '"Poppins", sans-serif',
       fontWeight: 700,
+    },
+    h4: {
+      fontFamily: '"Poppins", sans-serif',
+      fontWeight: 600,
+    },
+    h5: {
+      fontFamily: '"Poppins", sans-serif',
+      fontWeight: 600,
+    },
+    h6: {
+      fontFamily: '"Poppins", sans-serif',
+      fontWeight: 600,
+    },
+    subtitle1: {
+      fontFamily: '"Poppins", sans-serif',
+    },
+    subtitle2: {
+      fontFamily: '"Poppins", sans-serif',
+    },
+    body1: {
+      fontFamily: '"Poppins", sans-serif',
+    },
+    body2: {
+      fontFamily: '"Poppins", sans-serif',
     },
     button: {
       textTransform: 'none',
-      fontWeight: 600,
+      fontWeight: 500,
+      fontFamily: '"Poppins", sans-serif',
     },
   },
   shape: {
@@ -50,7 +75,7 @@ const theme = createTheme({
     MuiButton: {
       styleOverrides: {
         root: {
-          borderRadius: 50,
+          borderRadius: 8,
           padding: '8px 16px',
         },
       },

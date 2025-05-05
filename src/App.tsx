@@ -19,7 +19,6 @@ import ServicesPage from './pages/ServicesPage';
 import PwaWrapper from './components/pwa/PwaWrapper';
 import PwaDetector from './components/pwa/PwaDetector';
 import InstallPwaBanner from './components/pwa/InstallPwaBanner';
-import WindowsInstallPrompt from './components/pwa/WindowsInstallPrompt';
 
 // Check if we're in development mode
 const isDevelopment = process.env.NODE_ENV === 'development' || 
@@ -27,15 +26,12 @@ const isDevelopment = process.env.NODE_ENV === 'development' ||
                      window.location.hostname === '127.0.0.1';
 
 function App() {
-  // Check if the app is running on Windows
-  const isWindows = /Windows NT/.test(window.navigator.userAgent);
-  
   return (
     <HelmetProvider>
       <ThemeProvider theme={theme}>
         <CssBaseline />
-        <PwaWrapper>
-          <Router>
+        <Router>
+          <PwaWrapper>
             <Routes>
               <Route path="/" element={<LandingPage />} />
               <Route path="/services" element={<ServicesPage />} />
@@ -44,11 +40,13 @@ function App() {
               <Route path="/gallery" element={<GalleryPage />} />
               <Route path="/contact-us" element={<ContactUsPage />} />
               <Route path="/quote-success" element={<QuoteSuccessPage />} />
+              <Route path="/my-requests" element={<TableListPage />} />
+              <Route path="/support" element={<ContactUsPage />} />
+              <Route path="/profile" element={<DashboardPage />} />
             </Routes>
-          </Router>
+          </PwaWrapper>
           <InstallPwaBanner />
-          {isWindows && <WindowsInstallPrompt />}
-        </PwaWrapper>
+        </Router>
         {isDevelopment && <PwaDetector />}
       </ThemeProvider>
     </HelmetProvider>
