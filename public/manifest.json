@@ -21,80 +21,12 @@
       "src": "MOTEX+Logo.png",
       "type": "image/png",
       "sizes": "any"
-    },
-    {
-      "src": "logo192.png",
-      "type": "image/png",
-      "sizes": "192x192",
-      "purpose": "maskable"
     }
   ],
   "start_url": "/?pwa=true",
   "scope": "/",
   "display": "standalone",
-  "display_override": ["window-controls-overlay", "standalone", "minimal-ui"],
   "theme_color": "#DE1F27",
   "background_color": "#ffffff",
-  "description": "Sydney's Premier Courier Service - Fast, reliable, and personalized courier solutions",
-  "orientation": "portrait",
-  "screenshots": [
-    {
-      "src": "screenshots/home-screen.png",
-      "type": "image/png",
-      "sizes": "720x1280",
-      "form_factor": "narrow"
-    },
-    {
-      "src": "screenshots/map-screen.png",
-      "type": "image/png",
-      "sizes": "720x1280",
-      "form_factor": "narrow"
-    },
-    {
-      "src": "screenshots/quote-screen.png",
-      "type": "image/png",
-      "sizes": "720x1280",
-      "form_factor": "narrow"
-    }
-  ],
-  "shortcuts": [
-    {
-      "name": "Request Pickup",
-      "short_name": "Pickup",
-      "description": "Request a pickup with location selection",
-      "url": "/map-pickup-drop?pwa=true",
-      "icons": [{ "src": "icons/location.png", "sizes": "192x192" }]
-    },
-    {
-      "name": "Get Quote",
-      "short_name": "Quote",
-      "description": "Get an instant quote for your delivery",
-      "url": "/instant-quote?skip-map=true&pwa=true",
-      "icons": [{ "src": "icons/quote.png", "sizes": "192x192" }]
-    },
-    {
-      "name": "My Requests",
-      "short_name": "Requests",
-      "description": "View your delivery requests",
-      "url": "/my-requests?pwa=true",
-      "icons": [{ "src": "icons/history.png", "sizes": "192x192" }]
-    },
-    {
-      "name": "Contact Support",
-      "short_name": "Support",
-      "description": "Contact Motex Transport Support",
-      "url": "/contact-us?pwa=true",
-      "icons": [{ "src": "icons/support.png", "sizes": "192x192" }]
-    }
-  ],
-  "id": "motex-transport-pwa",
-  "categories": ["business", "logistics", "transport"],
-  "prefer_related_applications": false,
-  "handle_links": "preferred",
-  "launch_handler": {
-    "client_mode": ["navigate-existing", "auto"]
-  },
-  "edge_side_panel": {
-    "preferred_width": 400
-  }
+  "description": "Sydney's Premier Courier Service - Fast, reliable, and personalized courier solutions"
 } 

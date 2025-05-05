@@ -4,7 +4,7 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta name="theme-color" content="#DE1F27">
-  <title>You're Offline - Motex Transport</title>
+  <title>Offline - Motex Transport</title>
   <link rel="icon" href="/MOTEX+Logo.png">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -111,8 +111,8 @@
     <h1>You're currently offline</h1>
     
     <p>
-      It seems you don't have an internet connection right now. 
-      Some features of Motex Transport may not work properly.
+      Please check your internet connection and try again. 
+      When you're back online, you'll be redirected to the Motex Transport website.
     </p>
     
     <button class="btn" onclick="tryReconnecting()">Try Again</button>
@@ -124,12 +124,16 @@
   
   <script>
     function tryReconnecting() {
-      window.location.reload();
+      if (navigator.onLine) {
+        window.location.href = "https://motextransport.com.au";
+      } else {
+        window.location.reload();
+      }
     }
     
     // Listen for online status changes
     window.addEventListener('online', function() {
-      window.location.reload();
+      window.location.href = "https://motextransport.com.au";
     });
   </script>
 </body>

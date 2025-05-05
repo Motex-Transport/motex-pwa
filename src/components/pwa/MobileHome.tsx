@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { 
   Box, 
   Typography, 
@@ -35,20 +35,15 @@ import TouchableCard from './TouchableCard';
 const MobileHome: React.FC = () => {
   const navigate = useNavigate();
   const theme = useTheme();
-  const [isRefreshing, setIsRefreshing] = useState(false);
 
   // Handle pull-to-refresh
   const handleRefresh = async (): Promise<void> => {
-    setIsRefreshing(true);
-    
     try {
       // Simulate a network request
       await new Promise(resolve => setTimeout(resolve, 1500));
       console.log('Refresh completed');
     } catch (error) {
       console.error('Refresh failed:', error);
-    } finally {
-      setIsRefreshing(false);
     }
   };
 
