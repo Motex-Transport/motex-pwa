@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useRef } from 'react';
 import { Box, Button, Typography, useTheme } from '@mui/material';
 import { useMediaQuery } from '@mui/material';
 
@@ -8,7 +8,7 @@ import { Swiper, SwiperSlide } from 'swiper/react';
 import 'swiper/css';
 import 'swiper/css/pagination';
 // import required modules
-import { Pagination } from 'swiper/modules';
+import { Pagination, Autoplay } from 'swiper/modules';
 
 interface OnboardingProps {
   onComplete: () => void;
@@ -16,50 +16,48 @@ interface OnboardingProps {
 
 const Onboarding: React.FC<OnboardingProps> = ({ onComplete }) => {
   const theme = useTheme();
-  const [activeStep, setActiveStep] = useState(0);
+  const [currentIndex, setCurrentIndex] = useState(0);
   const isMobile = useMediaQuery(theme.breakpoints.down('sm'));
+  const swiperRef = useRef<any>(null);
   
-  // Define onboarding slides with content matching the screenshots
+  // Define onboarding slides with content matching the reference screenshots
   const slides = [
     {
-      title: "Equality for All",
-      description: "Everyone deserves the same great service",
-      image: "/1 motex.png",
-      bgColor: "#ffffff", 
-      textColor: "#000000"
+      title: "Book Transport in Seconds",
+      description: "From parcels to premium rides — get started effortlessly.",
+      image: "/assets/onboarding-1.png",
+      bgColor: "#FFFCDF", // Light yellow
     },
     {
-      title: "Fast Reliable Delivery",
-      description: "Your packages delivered on time, every time",
-      image: "/2 motex.png",
-      bgColor: "#ffffff",
-      textColor: "#000000"
+      title: "Track Every Booking",
+      description: "Stay informed with real-time updates and booking status",
+      image: "/assets/onboarding-2.png",
+      bgColor: "#FFDCE5", // Light pink
     },
     {
-      title: "Your Location, Our Destination",
-      description: "Track your delivery in real-time with ease",
-      image: "/3 motex.png",
-      bgColor: "#ffffff",
-      textColor: "#000000"
-    }
+      title: "We're With You Every Step",
+      description: "Transparent communication and real-time booking updates.",
+      image: "/assets/onboarding-3.png",
+      bgColor: "#DFFCEA", // Light green
+    },
   ];
 
   const maxSteps = slides.length;
 
   const handleNext = () => {
-    if (activeStep < maxSteps - 1) {
-      setActiveStep((prevActiveStep) => prevActiveStep + 1);
+    if (currentIndex < maxSteps - 1) {
+      swiperRef.current.slideNext();
     } else {
       onComplete();
     }
   };
 
-  const handleClose = () => {
+  const handleSkip = () => {
     onComplete();
   };
 
-  const handleStepChange = (swiper: any) => {
-    setActiveStep(swiper.activeIndex);
+  const handleSlideChange = (swiper: any) => {
+    setCurrentIndex(swiper.activeIndex);
   };
 
   return (
@@ -70,16 +68,17 @@ const Onboarding: React.FC<OnboardingProps> = ({ onComplete }) => {
         left: 0,
         right: 0,
         bottom: 0,
-        backgroundColor: slides[activeStep].bgColor,
+        backgroundColor: '#ffffff',
         zIndex: 9999,
-        transition: 'background-color 0.5s ease',
+        display: 'flex',
+        flexDirection: 'column',
+        height: '100%',
       }}
     >
-      {/* Top navigation - pagination dots */}
       <Box 
         sx={{ 
-          position: 'fixed', 
-          top: 16, 
+          position: 'absolute', 
+          top: 24, 
           left: 0,
           right: 0,
           display: 'flex', 
@@ -89,97 +88,104 @@ const Onboarding: React.FC<OnboardingProps> = ({ onComplete }) => {
           zIndex: 10,
         }}
       >
-        {[0, 1, 2].map((dot) => (
+        {slides.map((_, index) => (
           <Box
-            key={`dot-${dot}`}
+            key={`dot-${index}`}
             sx={{
-              width: 8,
-              height: 8,
-              borderRadius: '50%',
-              backgroundColor: dot === activeStep ? '#DE1F27' : 'rgba(0,0,0,0.3)',
+              width: index === currentIndex ? 20 : 10,
+              height: 10,
+              borderRadius: 5,
+              transition: 'width 0.3s ease',
+              backgroundColor: index === currentIndex ? theme.palette.primary.main : '#D9D9D9',
             }}
           />
         ))}
       </Box>
 
-      <Swiper
-        onSlideChange={handleStepChange}
-        pagination={false}
-        modules={[Pagination]}
-        className="mySwiper"
-        style={{ width: '100%', height: '100%' }}
-      >
-        {slides.map((step, index) => (
-          <SwiperSlide key={index}>
-            <Box
-              sx={{
-                height: '100vh',
-                width: '100%',
-                display: 'flex',
-                flexDirection: 'column',
-                alignItems: 'center',
-                justifyContent: 'center',
-                textAlign: 'center',
-                px: 3,
-                py: 6,
-              }}
-            >
-              <Box 
-                sx={{ 
-                  flexGrow: 1, 
-                  display: 'flex', 
-                  alignItems: 'center', 
-                  justifyContent: 'center', 
-                  width: '100%', 
-                  maxWidth: '400px',
-                  mb: 2
+      <Box sx={{ flex: 1, width: '100%' }}>
+        <Swiper
+          onSlideChange={handleSlideChange}
+          onSwiper={(swiper: any) => {
+            swiperRef.current = swiper;
+          }}
+          pagination={false}
+          modules={[Pagination, Autoplay]}
+          className="mySwiper"
+          style={{ width: '100%', height: '100%' }}
+        >
+          {slides.map((step, index) => (
+            <SwiperSlide key={index}>
+              <Box
+                sx={{
+                  height: '100%',
+                  width: '100%',
+                  display: 'flex',
+                  flexDirection: 'column',
+                  alignItems: 'center',
+                  justifyContent: 'center',
+                  textAlign: 'center',
+                  px: 3,
+                  pt: 8,
+                  pb: 12,
+                  backgroundColor: step.bgColor,
                 }}
               >
-                <img 
-                  src={step.image} 
-                  alt={step.title} 
-                  style={{ 
+                <Box 
+                  sx={{ 
+                    flex: 1,
+                    display: 'flex', 
+                    alignItems: 'center', 
+                    justifyContent: 'center', 
                     width: '100%', 
-                    maxHeight: '60vh',
-                    objectFit: 'contain'
-                  }} 
-                />
-              </Box>
-              <Box sx={{ mb: 4 }}>
-                <Typography
-                  variant="h4"
-                  sx={{
-                    fontWeight: 'bold',
-                    mb: 1,
-                    color: step.textColor,
-                    fontFamily: '"Poppins", sans-serif',
-                    fontSize: { xs: '1.75rem', sm: '2rem' },
+                    maxWidth: '400px',
+                    mb: 2,
+                    mt: 8
                   }}
                 >
-                  {step.title}
-                </Typography>
-                <Typography
-                  variant="body1"
-                  sx={{
-                    color: 'rgba(0, 0, 0, 0.7)',
-                    fontFamily: '"Poppins", sans-serif',
-                    maxWidth: '600px',
-                    mx: 'auto',
-                    fontSize: { xs: '1rem', sm: '1.1rem' },
-                  }}
-                >
-                  {step.description}
-                </Typography>
+                  <img 
+                    src={step.image} 
+                    alt={step.title} 
+                    style={{ 
+                      width: '90%', 
+                      maxHeight: '50vh',
+                      objectFit: 'contain'
+                    }} 
+                  />
+                </Box>
+                <Box sx={{ mb: 6, px: 2, maxWidth: '450px' }}>
+                  <Typography
+                    variant="h4"
+                    sx={{
+                      fontWeight: 'bold',
+                      mb: 2,
+                      color: '#000000',
+                      fontFamily: '"Poppins", sans-serif',
+                      fontSize: { xs: '24px', sm: '28px' },
+                    }}
+                  >
+                    {step.title}
+                  </Typography>
+                  <Typography
+                    variant="body1"
+                    sx={{
+                      color: '#666666',
+                      fontFamily: '"Poppins", sans-serif',
+                      fontSize: { xs: '16px', sm: '18px' },
+                      lineHeight: 1.5,
+                    }}
+                  >
+                    {step.description}
+                  </Typography>
+                </Box>
               </Box>
-            </Box>
-          </SwiperSlide>
-        ))}
-      </Swiper>
+            </SwiperSlide>
+          ))}
+        </Swiper>
+      </Box>
 
-      {/* Bottom controls - Skip button or Let's Start button */}
       <Box 
         sx={{ 
-          position: 'fixed', 
+          position: 'absolute', 
           bottom: 0, 
           left: 0, 
           right: 0, 
@@ -187,19 +193,25 @@ const Onboarding: React.FC<OnboardingProps> = ({ onComplete }) => {
           display: 'flex', 
           justifyContent: 'center',
           zIndex: 10,
+          backgroundColor: 'transparent'
         }}
       >
-        {activeStep < maxSteps - 1 ? (
+        {currentIndex < maxSteps - 1 ? (
           <Box sx={{ width: '100%', display: 'flex', justifyContent: 'space-between' }}>
             <Button
-              onClick={handleClose}
-              variant="text"
+              onClick={handleSkip}
+              variant="outlined"
               sx={{ 
-                color: '#000000',
-                fontWeight: 'medium',
+                color: '#333333',
+                borderColor: '#E5E5E5',
+                backgroundColor: '#F8F8F8',
+                borderRadius: 2,
+                py: 1.6,
+                px: 4,
                 textTransform: 'none',
                 fontFamily: '"Poppins", sans-serif',
-                fontSize: '1rem'
+                fontWeight: 500,
+                fontSize: '16px'
               }}
             >
               Skip
@@ -209,16 +221,17 @@ const Onboarding: React.FC<OnboardingProps> = ({ onComplete }) => {
               variant="contained"
               disableElevation
               sx={{ 
-                bgcolor: '#DE1F27',
+                bgcolor: theme.palette.primary.main,
                 color: '#ffffff',
-                borderRadius: 8,
+                borderRadius: 2,
+                py: 1.6,
                 px: 4,
                 textTransform: 'none',
                 fontFamily: '"Poppins", sans-serif',
-                fontWeight: 'medium',
-                fontSize: '1rem',
+                fontWeight: 500,
+                fontSize: '16px',
                 '&:hover': {
-                  bgcolor: '#c41920'
+                  bgcolor: theme.palette.primary.dark
                 }
               }}
             >
@@ -232,20 +245,20 @@ const Onboarding: React.FC<OnboardingProps> = ({ onComplete }) => {
             disableElevation
             fullWidth
             sx={{ 
-              bgcolor: '#DE1F27',
+              bgcolor: theme.palette.primary.main,
               color: '#ffffff',
-              borderRadius: 8,
-              py: 1.5,
+              borderRadius: 2,
+              py: 1.6,
               textTransform: 'none',
               fontFamily: '"Poppins", sans-serif',
-              fontWeight: 'medium',
-              fontSize: '1.1rem',
+              fontWeight: 500,
+              fontSize: '16px',
               '&:hover': {
-                bgcolor: '#c41920'
+                bgcolor: theme.palette.primary.dark
               }
             }}
           >
-            Get Started
+            Let's Start
           </Button>
         )}
       </Box>

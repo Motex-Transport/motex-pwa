@@ -32,9 +32,9 @@ export const isPwa = (): boolean => {
     userAgent: window.navigator.userAgent
   });
                          
-  return (isDisplayModeStandalone || 
+  return ((isDisplayModeStandalone || 
          isIOSStandalone || 
          isAndroidTWA || 
-         (hasServiceWorker && isFromHomescreen)) && isMobileDevice || 
+         (hasServiceWorker && isFromHomescreen)) && isMobileDevice) || 
          hasTestQueryParam; // For testing
 }; 

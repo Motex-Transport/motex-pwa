@@ -229,7 +229,12 @@ const FormSection = styled(Box)(({ theme }) => ({
   marginBottom: theme.spacing(6),
 }));
 
-const InstantQuotePage = () => {
+// Add mapMode to the component props
+interface InstantQuotePageProps {
+  mapMode?: boolean;
+}
+
+const InstantQuotePage: React.FC<InstantQuotePageProps> = ({ mapMode = false }) => {
   const location = useLocation();
   const { state } = location;
   const theme = useTheme();
@@ -425,6 +430,21 @@ const InstantQuotePage = () => {
   const handleCloseSuccessDialog = () => {
     setSuccessDialogOpen(false);
   };
+
+  // Check if in PWA mode
+  const isPwa = window.matchMedia('(display-mode: standalone)').matches ||
+              (navigator as any).standalone === true ||
+              window.location.search.includes('pwa=true');
+
+  // If in mapMode and PWA mode, redirect to the PWA wrapper handled MapPickupDrop component
+  useEffect(() => {
+    if (mapMode && isPwa) {
+      // This will be handled by the PwaWrapper which renders the MapPickupDrop component
+      // Nothing to do here as PwaWrapper intercepts the route
+    }
+  }, [mapMode, isPwa]);
+  
+  // If in mapMode but not PWA, we should show content appropriate for the map view
 
   return (
     <LocalizationProvider dateAdapter={AdapterDayjs}>

@@ -37,6 +37,7 @@ function App() {
               <Route path="/services" element={<ServicesPage />} />
               <Route path="/about-us" element={<AboutUsPage />} />
               <Route path="/instant-quote" element={<InstantQuotePage />} />
+              <Route path="/map-pickup-drop" element={<InstantQuotePage mapMode={true} />} />
               <Route path="/gallery" element={<GalleryPage />} />
               <Route path="/contact-us" element={<ContactUsPage />} />
               <Route path="/quote-success" element={<QuoteSuccessPage />} />
